@@ -3,7 +3,6 @@
 
 {% block content %}
 
-
 <div style="background-color: #262626">
 	<div class="container" style=" padding:50px; padding-bottom:30px; ">
 	   <p style="color:white; font-size: 50px; font-weight: bold">PU Palette</p>
@@ -39,7 +38,7 @@
 			<!-- color circle -->
 			<div class = "column" style="flex:20%">
 				<div id = "circle" class = "circle" onclick="showPicker()"></div>
-				<div class="ColorPicker" id="boxPicker" style="display:none; position: fixed; padding-top: 10px; ">
+				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px; ">
 		        </div>
 
 			</div>
@@ -53,9 +52,6 @@
 <div class = "container" style = "padding: 50px">
  	<object data = "{% static 'map.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" height = "100%"></object>
 </div>
-
-
-
 
 	<script>
 		function showPicker() {
@@ -91,56 +87,72 @@
 		var hexval = document.getElementById("hexval");
 		var circle = document.getElementById("circle");
 
+
+// TO DETERMINE THESE COLORS, USE HSV 
+		let light = hexval.value;
+		let med = '#757575'
+		let dark = '#333333'
+
 		hexval.oninput = function() {
 			circle.style.backgroundColor = this.value;
+			boxPicker.addColor(this.value);
+			boxPicker.removeColor(0);
 		}
 
 
 		boxPicker.on(["color:init", "color:change"], function(color){
-		  document.getElementById("hexval").value = color.hexString;
-		  document.getElementById("circle").style.backgroundColor = color.hexString;
+		  hexval.value = color.hexString;
+		  circle.style.backgroundColor = color.hexString;
+		  light = hexval.value;
+		  // med = hexval.value;
+		  // dark = hexval.value;
 		});
 
 
 
-
-
-		let lightblue = '#ffa200'
-		let medblue = '#b0802e'
-		let darkblue = '#594b32'
-		let color = '#302c25'
 
 		let ids = ["northamerica", "southamerica", "asia", "africa", "europe", "australia"]
 
 		// function for determining what to color the region, based on frequency 
 		function getColor(value) {
 			if (value > 50 && value <= 100) {
-				color = lightblue
+				color = light
 			}
 			else if (value > 100 && value <= 200){
-				color = medblue
+				color = med
 			}
 			else if (value > 200 && value <= 300){
-				color = darkblue
+				color = dark
 			}
 			return color
 		}
 
 		var slider = document.getElementById("myRange");
 		var output = document.getElementById("demo");
-		output.value = 1900;
+		output.value = "100-199";
+
 
 		  var a = document.getElementById("alphasvg");
 	        a.addEventListener("load",function(){
 	            // get the inner DOM of alpha.svg
 	            var svgDoc = a.contentDocument;
-	           
-	           // set default
-	           /* for (i = 0; i < ids.length; i++) {
-					value = Math.random() * 400 + 50// this would be the color search palette function... using date 
-					color = getColor(value)
-					svgDoc.getElementById(ids[i]).style.fill = color
-				}*/
+
+
+				output.onchange = function() {
+					val = this.value;
+			        if (val > 0 && val <= 100){
+			           		date = "0-99"
+			            }
+			           	else if (val > 100 && val <=200) {
+			          		date = "100-199"
+			           	}
+			           	else if (val > 200 && val <=300) {
+			           		date = "200-299"
+			           	}
+						output.value = date;
+						slider.value = val;
+				}
+	          
 	
 	            slider.oninput = function() {
 	            	// slider value
@@ -148,14 +160,14 @@
 
 	            	// grab date range from slider values / partitions to input into search algorithm
 	            	if (val > 0 && val <= 100){
-	            		date = 1800
+	            		date = "0-99"
 	            	}
 	            	else if (val > 100 && val <=200) {
-	            		date = 1900
+	            		date = "100-199"
 	            	}
 
 	            	else if (val > 200 && val <=300) {
-	            		date = 2000
+	            		date = "200-299"
 	            	}
 
 					output.value = date;
