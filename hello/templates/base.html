@@ -13,14 +13,17 @@
 
   <base href="./">
 
-  <link rel="stylesheet" type="text/css" src="styles.css"/>
-
-
-
   <!-- IN LIEU OF STYLES.CSS, ALL STYLES IN BASE.HTML-->
   <style>
     body {
       background-color: black;
+    }
+
+    .special-container {
+      padding-bottom: 30px; 
+      padding-left: 50px; 
+      padding-right: 50px; 
+      padding-top: 20px
     }
 
 
@@ -119,6 +122,13 @@
 
 </head>
 <body>
+
+<div style="background-color: #262626;">
+   <div class = "container" style="padding-top: 30px; padding-left: 50px; padding-right: 50px; color: white;">
+    <a href="/"><span class="glyphicon glyphicon-home" style="color:white; font-size: 18px; padding-right: 20px"></span></a>
+    <a href="/info/"><span class="glyphicon glyphicon-info-sign" style="color:white; font-size: 18px"></span></a>
+   </div>
+</div>
 
 {% block content %}{% endblock %}
 
