@@ -51,7 +51,7 @@
 
 
 <div class = "container special-container">
- 	<object data = "{% static 'map.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" height = "100%"></object>
+ 	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
 </div>
 
 	<script>
@@ -91,7 +91,7 @@
 
 // TO DETERMINE THESE COLORS, USE HSV 
 		let light = hexval.value;
-		let med = '#757575'
+		let med = '#696969'
 		let dark = '#333333'
 
 		hexval.oninput = function() {
@@ -111,11 +111,38 @@
 
 
 
+// LIST OF ALL COUNTRIES IN DATABASE 
+// uk = england and scotland
+// central african republic = centrafrique
+// ? korea - split into north and soutH in map
 
-		let ids = ["northamerica", "southamerica", "asia", "africa", "europe", "australia"]
+// MISSING: 
+// samoa
+// tibet
+// siberia
+// palestine
+// polynesia
+// levant
+// ottoman empire
+// cyrpriote
+// java
+// roman empire
+// persia
+// solomon islands
+// austral islands
+// matty's islands
+// northumberland
+// myanmar
+// yugoslavia
+// bermuda
+// mallorca
+// phillipines
+
+
+		let ids = ["canada", "mexico", "peru", "ecuador", "ethiopia", "japan", "china", "netherlands", "usa", "austria", "italy", "uk", "egypt", "indonesia", "belgium", "syria", "israel", "Côte d’Ivoire", "lebanon", "france", "germany", "spain", "australia", "greece", "colombia", "switzerland", "denmark", "sri_lanka", "thailand", "cambodia", "panama", "algeria", "guatemala", "turkey", "nigeria", "portugal", "ireland", "norway", "congo", "india", "afghanistan", "iran", "sweden", "kenya", "vietnam", "ukraine", "brazil", "nicaragua", "cyprus", "iraq", "russia", "bolivia", "tunisia", "costa_rica", "argentina", "chile", "angola", "jordan", "nepal", "pakistan", "ghana", "gabon", "st._lucia", "el_salvador", "papua_new_guinea", "guinea", "grenada", "romania", "hungary", "new_caledonia", "tanzania", "south_korea", "madagascar", "zimbabwe", "centrafrique", "domincan_republic", "rwanda", "south_africa", "fiji", "uruguay", "sierra_leone", "venezuela", "morocco", "benin", "poland"]
 
 		// function for determining what to color the region, based on frequency 
-		function getColor(value) {
+		function getColor(value, element) {
 			if (value > 50 && value <= 100) {
 				color = light
 			}
@@ -177,9 +204,9 @@
 					for (i = 0; i < ids.length; i++) {
 						// this would be the color search palette function...
 						// using date, id, and colorpal to return the 
-						value = Math.random() * 400 + 50
+						let value = Math.random() * 400 + 50
 
-						color = getColor(value)
+						let color = getColor(value, svgDoc.getElementById(ids[i]))
 						svgDoc.getElementById(ids[i]).style.fill = color
 					}
 				}
