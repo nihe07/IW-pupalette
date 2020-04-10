@@ -62,16 +62,18 @@
 
 		let mini_ids = ["Canada", "Mexico", "Peru", "Ecuador", "Ethiopia", "Japan", "China", "Netherlands", "United_States", "Austria", "Italy", "UK", "Egypt"]
 
-		let colorVAR = null;
-		let color = null;
-		let most = null;
-		let few = '#696969'
-		let none = '#333333'
 
 		var slider = document.getElementById("slider");
 		var sliderInput = document.getElementById("sliderInput");
 		var hexval = document.getElementById("hexval");
 		var circle = document.getElementById("circle");
+
+
+		let colorVAR = null;
+		let color = null;
+		let most = null;
+		let few = '#696969'
+		let none = '#333333'
 
 		sliderInput.value = "1700-1800";
 		circle.style.backgroundColor = "#262626";
@@ -189,7 +191,7 @@
             var svgDoc = a.contentDocument;
 
 			// Fills circle and adjust box/hue slider colors & position with hex input
-			hexval.oninput = function() {
+			hexval.onchange = function() {
 				circle.style.backgroundColor = this.value;
 				boxPicker.addColor(this.value);
 				boxPicker.removeColor(0);
