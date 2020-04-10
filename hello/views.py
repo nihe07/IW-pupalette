@@ -9,7 +9,6 @@ import scipy.spatial.distance as dis
 import scipy
 import sqlite3
 from sqlite3 import Error
-import sys
 
 # Create your views here.
 def index(request):
