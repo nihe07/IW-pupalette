@@ -65,17 +65,29 @@ def findFreq(searchRGB, values):
 	conn = sqlite3.connect('mini-puam.db')
 	c = conn.cursor()
 
-	query = ''' SELECT COLOR1R, COLOR1G, COLOR1B
+	query = ''' SELECT COLOR1R, COLOR1G, COLOR1B, 
+	COLOR2R, COLOR2G, COLOR2B, 
+	COLOR3R, COLOR3G, COLOR3B, 
+	COLOR4R, COLOR4G, COLOR4B, 
+	COLOR5R, COLOR5G, COLOR5B
 				FROM OBJECTS
 				WHERE COUNTRY = ? AND DATE BETWEEN ? AND ?'''
 
 	c.execute(query, values)
-	colors= c.fetchall();
+	palettes= c.fetchall();
 	ids = getIDS(values);
 
 	i = 0;
-	for imageRGB in colors:
-		if (isMatch(searchRGB, imageRGB)):
+	for palette in palettes:
+
+		rgb1 = (palette[0], palette[1], palette[2])
+		rgb2 = (palette[3], palette[4], palette[5])
+		rgb3 = (palette[6], palette[7], palette[8])
+		rgb4 = (palette[9], palette[10], palette[11])
+		rgb5 = (palette[12], palette[13], palette[14])
+
+
+		if (isMatch(searchRGB, rgb1) or isMatch(searchRGB, rgb2) or isMatch(searchRGB, rgb3) or isMatch(searchRGB, rgb4) or isMatch(searchRGB, rgb5)):
 			count = count + 1
 			objectIDs.append(ids[i])
 		i = i+1
@@ -101,4 +113,6 @@ def colorSearch(request):
 		data.append(count)
 		data.append(objectIDs)
 	return JsonResponse(data, safe=False)
+
+
 
