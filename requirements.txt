@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 numpy
 scipy
+sqlite3
