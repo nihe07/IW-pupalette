@@ -58,9 +58,10 @@
 	<script>
 
 // ESSENTIAL VARIABLES & FUNCTIONS//
+// maybe change Cote d Ivoire
 	// Country IDs ** missing some countries in the svg map (refer to google doc) 
 
-	let mapids = ['Canada', 'Mexico', 'Peru', 'Ecuador', 'Ethiopia', 'Japan', 'China', 'Netherlands', 'United_States', 'Austria', 'Italy', 'UK', 'Egypt', 'Indonesia', 'Belgium', 'Syria', 'Israel', "Côte d’Ivoire", 'Lebanon', 'France', 'Germany', 'Spain', 'Australia', 'Greece', 'Colombia', 'Switzerland', 'Denmark', 'Sri_Lanka', 'Thailand', 'Cambodia', 'Panama', 'Samoa', 'Algeria', 'Tibet', 'Guatemala', 'Turkey', 'Nigeria', 'Serbia', 'Portugal', 'Ireland', 'Norway', 'Democratic_Republic_of_the_Congo', 'India', 'Afghanistan', 'Palestine', 'Iran', 'French_Polynesia', 'Sweden', 'Kenya', 'Vietnam', 'Ukraine', 'Brazil', 'Nicaragua', 'Korea', 'Cyprus', 'Iraq', 'Russia', 'Bolivia', 'Tunisia', 'Costa_Rica', 'Argentina', 'Angola', 'Jordan', 'Nepal', 'Pakistan', 'Ghana', 'Lebanon ', 'Mali', 'Gabon', 'St._Lucia', 'El_Salvador', 'Papua_New_Guinea', 'Honduras', 'Belize', 'Burkina_Faso', 'Cameroon', 'Cuba', 'Liberia', 'Chile', 'Guinea', 'Grenada', 'Romania', 'Hungary', 'New_Caledonia', 'Tanzania', 'Korea ', 'Madagascar', 'Zimbabwe', 'Central_African_Republic', 'Dominican_Republic', 'Rwanda', 'South_Africa', 'Solomon_Islands', 'Fiji', 'Myanmar', 'Uruguay', 'Sierra_Leone', 'Venezuela', 'Morocco', 'Benin', 'Bermuda', 'Philippines', 'Poland', 'Croatia', 'Mongolia']
+	let mapids = ['Canada', 'Mexico', 'Peru', 'Ecuador', 'Ethiopia', 'Japan', 'China', 'Netherlands', 'United_States', 'Austria', 'Italy', 'UK', 'Egypt', 'Indonesia', 'Belgium', 'Syria', 'Israel', 'Cote_d_Ivoire', 'Lebanon', 'France', 'Germany', 'Spain', 'Australia', 'Greece', 'Colombia', 'Switzerland', 'Denmark', 'Sri_Lanka', 'Thailand', 'Cambodia', 'Panama', 'Samoa', 'Algeria', 'Tibet', 'Guatemala', 'Turkey', 'Nigeria', 'Serbia', 'Portugal', 'Ireland', 'Norway', 'Democratic_Republic_of_the_Congo', 'India', 'Afghanistan', 'Palestine', 'Iran', 'French_Polynesia', 'Sweden', 'Kenya', 'Vietnam', 'Ukraine', 'Brazil', 'Nicaragua', 'Korea', 'Cyprus', 'Iraq', 'Russia', 'Bolivia', 'Tunisia', 'Costa_Rica', 'Argentina', 'Angola', 'Jordan', 'Nepal', 'Pakistan', 'Ghana', 'Mali', 'Gabon', 'St._Lucia', 'El_Salvador', 'Papua_New_Guinea', 'Honduras', 'Belize', 'Burkina_Faso', 'Cameroon', 'Cuba', 'Liberia', 'Chile', 'Guinea', 'Grenada', 'Romania', 'Hungary', 'New_Caledonia', 'Tanzania', 'Madagascar', 'Zimbabwe', 'Central_African_Republic', 'Dominican_Republic', 'Rwanda', 'South_Africa', 'Solomon_Islands', 'Fiji', 'Myanmar', 'Uruguay', 'Sierra_Leone', 'Venezuela', 'Morocco', 'Benin', 'Bermuda', 'Philippines', 'Poland', 'Croatia', 'Mongolia']
 
 
 		// let mini_ids = ["Canada", "Mexico", "Peru", "Ecuador", "Ethiopia", "Japan", "China", "Netherlands", "United_States", "Austria", "Italy", "UK", "Egypt"]
@@ -136,6 +137,10 @@
 				let values = country + "/" + range[0] + "/" + range[1]
 				let rgbStr = circle.style.backgroundColor.match(/\d+/g); 
 				let rgb = rgbStr[0] + "/" + rgbStr[1] + "/" + rgbStr[2]
+
+				if (svgDoc.getElementById(mapids[inc]) == null) {
+					console.log(mapids[inc])
+				}
 
 				
 				$.ajax({
