@@ -34,7 +34,7 @@ def info(request):
 # returns the ids of objects, given the desired country and date range
 # to be used in findFreq
 def getIDS(values):
-	conn = sqlite3.connect('mini-puam.db')
+	conn = sqlite3.connect('puam.db')
 	c = conn.cursor()
 	query = ''' SELECT ID
 				FROM OBJECTS
@@ -53,7 +53,7 @@ def getIDS(values):
 def isMatch(searchRGB, imageRGB):
 	dist = dis.euclidean(searchRGB, imageRGB)
 	isMatch = False
-	if (dist <= 80): 
+	if (dist <= 70): 
 		isMatch = True
 	return isMatch
 
@@ -62,7 +62,8 @@ def findFreq(searchRGB, values):
 	count = 0
 	objectIDs = []
 
-	conn = sqlite3.connect('mini-puam.db')
+	#conn = sqlite3.connect('mini-puam.db')
+	conn = sqlite3.connect('puam.db')
 	c = conn.cursor()
 
 	query = ''' SELECT COLOR1R, COLOR1G, COLOR1B, 
