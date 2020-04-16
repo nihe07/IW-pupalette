@@ -19,6 +19,11 @@
       background-color: black;
     }
 
+    .image-display {
+      width: 180px;
+    }
+
+
     .stripe-3 {
       background: repeating-linear-gradient(
         45deg,
@@ -54,7 +59,7 @@
     }
 
     .inputbox {
-    	width: 100px;
+    	width: 110px;
     	height: 20px;
     	background-color: #707070;
     	border-radius: 8px;
@@ -77,12 +82,20 @@
     }
 
     .circle {
-	  width: 85px;
-	  height: 85px;
-	  background-color: #a88332;
-	  border-radius: 50%;
-	  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-	  border-width: 0;
+      margin-left: 10px;
+  	  width: 100px;
+  	  height: 100px;
+  	  background-color: #c56b2a;
+  	  border-radius: 50%;
+  	  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  	  border-width: 0;
+    }
+
+    .circle:hover {
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(120, 120, 120, 0.2);
+      border-width: 0;
+
     }
 
     .slidecontainer {
@@ -102,6 +115,23 @@
       opacity: 0.7;
       -webkit-transition: .2s;
       transition: opacity .2s;
+    }
+
+    .loader {
+      position: absolute;
+      top:450px;
+      left:45%;
+      border: 5px solid grey; /* Light grey */
+      border-top: 5px solid white; /* Blue */
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .slider::-webkit-slider-thumb {
@@ -125,6 +155,7 @@
 /* Mouse-over effects */
     .slider:hover {
       opacity: 1; /* Fully shown on mouse-over */
+      cursor: pointer;
     }
 
 </style>
