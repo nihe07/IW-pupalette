@@ -8,15 +8,14 @@
 	<div class="container special-container">
 	   <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
 		 <div style="width: 75%">
-		   <p style="color:#BDBDBD; font-size: 12px; font-weight: 300">The goal of our project is to create a new interactive and visually interesting medium for consuming the Princeton University Art Museum’s online database, by representing how color has been used in different regions over time. Include description of the website and how to use it. </p>
+		   <p style="color:#BDBDBD; font-size: 12px; font-weight: 300">Explore the use of color in the Princeton University Art Museum's collection, over time and around the world! Select or text input a date and color, and watch the map light up with results. Click into countries to view artworks.  </p>
 		</div>
 	</div>
-
 
 	<div class = "container">
 		<div class="row" style="padding-bottom:20px">
 			<!-- date slider -->
-			<div class = "column" style="flex:60%">
+			<div class = "column" style="flex:55%">
 				<p class = "inputlabel">Date</p>
 				<input class = "inputbox" id="sliderInput"></input>
 				<div class="slidecontainer">
@@ -30,15 +29,15 @@
 			<!-- color + hex -->
 			<div class = "column" style="flex:10%">
 				<p class = "inputlabel">Color </p>
-				<input class = "inputbox" id="hexval" value="#ff0000"></input>
+				<input class = "inputbox" id="hexval" value="#c56b2a"></input>
 				
 			</div>
 
 			<!-- space between -->
-			<div class = "column" style="flex:5%"> </div>
+			<!-- <div class = "column" style="flex:5%"> </div> -->
 
 			<!-- color circle -->
-			<div class = "column" style="flex:20%">
+			<div class = "column" style="flex:30%">
 				<div id = "circle" class = "circle" onclick="showPicker()"></div>
 				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px; ">
 		        </div>
@@ -46,12 +45,14 @@
 			</div>
 
 		</div>
-	</div>
+	</div> 
+
+	<div class = "loader" id="loader" style="display: none;"></div>
 </div>
 
 
 
-<div class = "container special-container">
+<div class = "container special-container" style="padding-bottom: 0;">
  	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
 </div>
 
@@ -61,7 +62,11 @@
 // maybe change Cote d Ivoire
 	// Country IDs ** missing some countries in the svg map (refer to google doc) 
 
-	let mapids = ['Canada', 'Mexico', 'Peru', 'Ecuador', 'Ethiopia', 'Japan', 'China', 'Netherlands', 'United_States', 'Austria', 'Italy', 'UK', 'Egypt', 'Indonesia', 'Belgium', 'Syria', 'Israel', 'Cote_d_Ivoire', 'Lebanon', 'France', 'Germany', 'Spain', 'Australia', 'Greece', 'Colombia', 'Switzerland', 'Denmark', 'Sri_Lanka', 'Thailand', 'Cambodia', 'Panama', 'Samoa', 'Algeria', 'Tibet', 'Guatemala', 'Turkey', 'Nigeria', 'Serbia', 'Portugal', 'Ireland', 'Norway', 'Democratic_Republic_of_the_Congo', 'India', 'Afghanistan', 'Palestine', 'Iran', 'French_Polynesia', 'Sweden', 'Kenya', 'Vietnam', 'Ukraine', 'Brazil', 'Nicaragua', 'Korea', 'Cyprus', 'Iraq', 'Russia', 'Bolivia', 'Tunisia', 'Costa_Rica', 'Argentina', 'Angola', 'Jordan', 'Nepal', 'Pakistan', 'Ghana', 'Mali', 'Gabon', 'St._Lucia', 'El_Salvador', 'Papua_New_Guinea', 'Honduras', 'Belize', 'Burkina_Faso', 'Cameroon', 'Cuba', 'Liberia', 'Chile', 'Guinea', 'Grenada', 'Romania', 'Hungary', 'New_Caledonia', 'Tanzania', 'Madagascar', 'Zimbabwe', 'Central_African_Republic', 'Dominican_Republic', 'Rwanda', 'South_Africa', 'Solomon_Islands', 'Fiji', 'Myanmar', 'Uruguay', 'Sierra_Leone', 'Venezuela', 'Morocco', 'Benin', 'Bermuda', 'Philippines', 'Poland', 'Croatia', 'Mongolia']
+		let mapids = ['Canada', 'Mexico', 'Peru', 'Ecuador', 'Ethiopia', 'Japan', 'China', 'Netherlands', 'United_States', 'Austria', 'Italy', 'UK', 'Egypt', 'Indonesia', 'Belgium', 'Syria', 'Israel', 'Cote_d_Ivoire', 'Lebanon', 'France', 'Germany', 'Spain', 'Australia', 'Greece', 'Colombia', 'Switzerland', 'Denmark', 'Sri_Lanka', 'Thailand', 'Cambodia', 'Panama', 'Samoa', 'Algeria', 'Tibet', 'Guatemala', 'Turkey', 'Nigeria', 'Serbia', 'Portugal', 'Ireland', 'Norway', 'Democratic_Republic_of_the_Congo', 'India', 'Afghanistan', 'Palestine', 'Iran', 'French_Polynesia', 'Sweden', 'Kenya', 'Vietnam', 'Ukraine', 'Brazil', 'Nicaragua', 'Korea', 'Cyprus', 'Iraq', 'Russia', 'Bolivia', 'Tunisia', 'Costa_Rica', 'Argentina', 'Angola', 'Jordan', 'Nepal', 'Pakistan', 'Ghana', 'Mali', 'Gabon', 'St._Lucia', 'El_Salvador', 'Papua_New_Guinea', 'Honduras', 'Belize', 'Burkina_Faso', 'Cameroon', 'Cuba', 'Liberia', 'Chile', 'Guinea', 'Grenada', 'Romania', 'Hungary', 'New_Caledonia', 'Tanzania', 'Madagascar', 'Zimbabwe', 'Central_African_Republic', 'Dominican_Republic', 'Rwanda', 'South_Africa', 'Solomon_Islands', 'Fiji', 'Myanmar', 'Uruguay', 'Sierra_Leone', 'Venezuela', 'Morocco', 'Benin', 'Bermuda', 'Philippines', 'Poland', 'Croatia', 'Mongolia']
+
+		let searchObjectIDs = new Array(mapids.length)
+		let searchColors = new Array(mapids.length)
+		let searchCounts = new Array(mapids.length)
 
 
 		// let mini_ids = ["Canada", "Mexico", "Peru", "Ecuador", "Ethiopia", "Japan", "China", "Netherlands", "United_States", "Austria", "Italy", "UK", "Egypt"]
@@ -79,13 +84,15 @@
 		let few = '#4d4d4d'
 		let none = '#333333'
 
-		sliderInput.value = "1700-1800";
+		slider.value = 8
+		sliderInput.value = "1700-1799";
 		circle.style.backgroundColor = "#c56b2a";
 
 
 
 	// Function determining color based on frequency of artworks
 		function getColor(value) {
+			most = circle.style.backgroundColor
 			if (value > 20) {
 				color = most
 			}
@@ -116,7 +123,7 @@
 			else if (val == 9) {low = "1800"; high = "1850"}
 			else if (val == 10) {low = "1850"; high = "1900"}
 			else if (val == 11) {low = "1900"; high = "1945"}
-			else if (val == 12) {low = "1945"; high = "2020"}
+			else if (val == 12) {low = "1945"; high = "2021"}
 
 			range.push(low);
 			range.push(high);
@@ -126,39 +133,40 @@
 
 
 	// Function to color the map accordingly 
-		function colorMap(svgDoc){
-			// color the map
-			for (i = 0; i < mapids.length; i++) {
-				let inc = i
-				let count = 0;
-				let objectIDs = []; // empty list for object ids 
-				let range = getRange(slider.value);
-				let country = mapids[inc].replace("_", " ");
-				let values = country + "/" + range[0] + "/" + range[1]
-				let rgbStr = circle.style.backgroundColor.match(/\d+/g); 
-				let rgb = rgbStr[0] + "/" + rgbStr[1] + "/" + rgbStr[2]
+		function searchFunc(callback){
+			let rangeStr = getRange(slider.value).toString()
+			let rgbStr = circle.style.backgroundColor.match(/\d+/g).toString()
+			let mapidsStr = mapids.toString()
 
-				if (svgDoc.getElementById(mapids[inc]) == null) {
-					console.log(mapids[inc])
-				}
-
-				
-				$.ajax({
-				  type: "GET",
-				  url: "/colorSearch/",  // figure out how to link to colorSearch.py!!
-				  data: { 
-				  	csrfmiddlewaretoken: '{{ csrf_token }}',
-				  	searchRGB: rgb,
-				  	vals: values},
-				  success: function(response) {
-				  	count = response[0]
-				  	objectIDs = response[1]
-				  	colorVAR = getColor(count)
-				  	svgDoc.getElementById(mapids[inc]).style.fill = colorVAR;
-				  }
-				});
-			}
+			$.ajax({
+			  type: "GET",
+			  url: "/colorSearch/",  // figure out how to link to colorSearch.py!!
+			  data: { 
+			  	csrfmiddlewaretoken: '{{ csrf_token }}',
+			  	searchRGB: rgbStr,
+			  	dateRange: rangeStr,
+			  	mapIDs: mapidsStr},
+			  beforeSend: function(){
+			  	$("#loader").show();
+			  },
+			  success: callback,
+			  complete: function(data) {
+			  	$("#loader").hide();
+			  }
+			});
 		} 
+
+
+		function colorMap(svgDoc) {
+			searchFunc(function(response){
+				searchCounts = response[0];
+			  	searchObjectIDs = response[1];
+			  	for (i = 0; i < mapids.length; i++) {
+			  		fillColor = getColor(searchCounts[i])
+			  		svgDoc.getElementById(mapids[i]).style.fill = fillColor
+			  	}
+			});
+		}
 
 // COLOR PICKER //
 	// Toggles showing color picker on click of circle
@@ -203,17 +211,25 @@
 				circle.style.backgroundColor = this.value;
 				boxPicker.addColor(this.value);
 				boxPicker.removeColor(0);
+				colorMap(svgDoc)
 			}
-	
-			boxPicker.on(["color:init", "color:change"], function(color){
+
+			boxPicker.on(["color:init"], function(color) {
+			 	colorMap(svgDoc)
+			});
+
+			boxPicker.on(["color:change"], function(color){
 			  hexval.value = color.hexString;
 			  circle.style.backgroundColor = color.hexString;
 			  most = hexval.value;
-			  colorMap(svgDoc)
+			});
+
+			boxPicker.on(["input:end"], function(input) {
+			 	colorMap(svgDoc)
 			});
 
 			// changing the slider input based on slider location
-		    slider.oninput = function () {
+		    slider.onchange = function () {
 		       	val = this.value
 		       	if (val == 0){date = "15000-2001 BC"}
 				else if (val == 1) {date = "2000-1001 BC"}
