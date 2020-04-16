@@ -91,6 +91,7 @@ def findFreq(searchRGB, values):
 		if (isMatch(searchRGB, rgb1) or isMatch(searchRGB, rgb2) or isMatch(searchRGB, rgb3) or isMatch(searchRGB, rgb4) or isMatch(searchRGB, rgb5)):
 			count = count + 1
 			objectIDs.append(ids[i])
+
 		i = i+1
 
 	conn.close();
@@ -100,19 +101,29 @@ def findFreq(searchRGB, values):
 def colorSearch(request):
 	if request.method == 'GET':
 		data = []
+		searchCounts = []
+		searchObjectIDs = []
 
 		getrgb = request.GET['searchRGB']
-		searchRGB_str = getrgb.split('/')
-		searchRGB = (int(searchRGB_str[0]), int(searchRGB_str[1]), int(searchRGB_str[2]))
+		rgb_str = getrgb.split(',')
+		searchRGB = (int(rgb_str[0]), int(rgb_str[1]), int(rgb_str[2]))
 
-		getvals = request.GET['vals']
-		values_str =  getvals.split('/')
-		values = (values_str[0], int(values_str[1]), int(values_str[2]))
+		getmapids = request.GET['mapIDs']
+		mapids = getmapids.split(',')
 
-		count, objectIDs = findFreq(searchRGB, values)
+		getdates = request.GET['dateRange']
+		dates_str = getdates.split(',')
+		dates = [int(dates_str[0]), int(dates_str[1])]
 
-		data.append(count)
-		data.append(objectIDs)
+		for i in range (len(mapids)):
+			country = mapids[i].replace("_", " ")
+			values = (country, dates[0], dates[1])
+			count, objectIDs = findFreq(searchRGB, values)
+			searchCounts.append(count)
+			searchObjectIDs.append(objectIDs)
+
+		data.append(searchCounts)
+		data.append(searchObjectIDs)
 	return JsonResponse(data, safe=False)
 
 
