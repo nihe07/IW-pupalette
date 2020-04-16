@@ -230,7 +230,10 @@
 
 			// changing the slider input based on slider location
 		    slider.onchange = function () {
-		       	val = this.value
+		    	colorMap(svgDoc)
+			}
+			slider.oninput = function () {
+				val = this.value
 		       	if (val == 0){date = "15000-2001 BC"}
 				else if (val == 1) {date = "2000-1001 BC"}
 				else if (val == 2) {date = "1000 BC - 0 AD"}
@@ -245,7 +248,6 @@
 				else if (val == 11) {date = "1900-1944"}
 				else if (val == 12) {date = "1945-Present"}
 				sliderInput.value = date;
-		    	colorMap(svgDoc)
 			}
 
 		    // changing the slider location based on input
