@@ -3,8 +3,34 @@
 
 {% block content %}
 
- <div class="container" style="color:white">
- 	Country page
- </div>
+ <div style="background-color: #262626">
+     Country page
+     
+    <div id="imageContainer"></div>
+        <script>
+            // https://stackoverflow.com/questions/29488371/how-to-add-a-list-of-images-to-the-document-from-an-array-of-urls
+            // imgs is an array of image urls. modify so imgs is filled with urls from database.
+        var imgs = ['https://puam-loris.aws.princeton.edu/loris/y1975-17.jp2/full/300,/0/default.jpg', 
+        'https://puam-loris.aws.princeton.edu/loris/y1975-17.jp2/full/300,/0/default.jpg', 
+        'https://puam-loris.aws.princeton.edu/loris/y1975-17.jp2/full/300,/0/default.jpg'];
+        var container = document.getElementById('imageContainer');
+        var docFrag = document.createDocumentFragment();
+
+
+        imgs.forEach(function(cur, index, arr) {
+            var img = document.createElement('img');
+            img.src = cur;
+            docFrag.appendChild(img);
+        });
+
+
+        container.appendChild(docFrag);
+
+        </script>
+    </div>
+</div>
+
+ 
+
 
 {% endblock %}
