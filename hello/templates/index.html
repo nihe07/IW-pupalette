@@ -81,7 +81,7 @@
 		let colorVAR = null;
 		let color = null;
 		let most = null;
-		let few = '#4d4d4d'
+		let few = '#545454'
 		let none = '#333333'
 
 		slider.value = 8
@@ -92,7 +92,6 @@
 
 	// Function determining color based on frequency of artworks
 		function getColor(value) {
-			most = circle.style.backgroundColor
 			if (value > 20) {
 				color = most
 			}
@@ -203,8 +202,10 @@
 
 		var a = document.getElementById("alphasvg");
 	    a.addEventListener("load",function(){
+	    	most = circle.style.backgroundColor
 	       // get the inner DOM of alpha.svg
             var svgDoc = a.contentDocument;
+            svgDoc.getElementById('Most').style.fill = most
 
 			// Fills circle and adjust box/hue slider colors & position with hex input
 			hexval.onchange = function() {
@@ -226,6 +227,7 @@
 
 			boxPicker.on(["input:end"], function(input) {
 			 	colorMap(svgDoc)
+			 	svgDoc.getElementById('Most').style.fill = most
 			});
 
 			// changing the slider input based on slider location
