@@ -81,7 +81,6 @@
 
 		slider.value = 9
 		sliderInput.value = "1800-1849";
-		circle.style.backgroundColor = "#b86a32";
 		hexval.value ="#b86a32"
 
 
@@ -227,14 +226,16 @@
 	    	most = circle.style.backgroundColor
 	       // get the inner DOM of alpha.svg
             var svgDoc = a.contentDocument;
+            
+
+            circle.style.backgroundColor = hexval.value
+            most = hexval.value
             svgDoc.getElementById('Most').style.fill = most
 
 			const NamSpace= 'http://www.w3.org/2000/svg';
 
-
             for (i = 0; i < mapids.length; i++) {
 			  		getColor(searchCounts[i], svgDoc, mapids[i])
-			  		var country = svgDoc.getElementById(mapids[i])
 
 			  		let el= svgDoc.getElementById(mapids[i]);
 				    const wrapper = document.createElementNS(NamSpace,'a');
