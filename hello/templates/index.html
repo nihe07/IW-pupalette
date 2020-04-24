@@ -56,6 +56,11 @@
  	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
 </div>
 
+<!-- https://www.coffee-break-designs.com/labs/svg_stripe_generator/ -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+	
+	<rect width="100%" height="100%" fill="url(#pattern_KO5uZ)" :opacity="1" />
+</svg>
 	<script>
 
 // ESSENTIAL VARIABLES & FUNCTIONS//
@@ -91,8 +96,8 @@
 	// Function determining color based on frequency of artworks
 		function getColor(value, svgDoc, mapid) {
 			if (value > 20) {
-				color = most
-				svgDoc.getElementById(mapid).style.fill = color
+				svgDoc.getElementById("bg-fill").style.fill = most
+				svgDoc.getElementById(mapid).style.fill = "url(#diag)"
 			}
 			else if (value > 0 && value <= 20){
 				svgDoc.getElementById(mapid).style.fill = few
