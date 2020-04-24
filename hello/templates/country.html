@@ -4,8 +4,13 @@
 {% block content %}
 
 <div style="background-color: #262626">
+
+    <div class = "header">
     <div class="container special-container">
        <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
+       <div style="width: 75%">
+           <p style="color:#BDBDBD; font-size: 12px; font-weight: 300">Click into an image to view more information about the artwork on the Princeon University Art Museum website.</p>
+        </div>
     </div>
 
        <div class = "container">
@@ -14,29 +19,31 @@
             <div class = "column" style="flex:55%">
                 <p id="country" class = "inputlabel">Country</p>
                 <p id="date" class = "inputlabel">Date</p>
+                 <!--Go Back button FIX FUNCTIONALITY -->
+                 <div style="padding-top:10px">
+                     <button class="inputbox" style="color:white" onclick="goBack()">< Back to Map</button>
+                 </div>
             </div>
 
             <!-- space between -->
-            <div class = "column" style="flex:15%"> </div>
+            <div class = "column" style="flex:25%"> </div>
 
             <!-- color circle -->
-            <div class = "column" style="flex:30%">
+            <div class = "column" style="flex:20%">
                 <div id = "color" class = "no-click-circle"></div>
             </div>
 
         </div>
        </div> 
-
-       <!--Go Back button FIX FUNCTIONALITY -->
-    <div class = "container special-container" style="padding-top:0">
-        <button class="inputbox" style="color:white" onclick="goBack()">< Back to Map</button>
-    </div>
+</div>
 
 
     
     <div class = "loader" id="loader" style="display: none;"></div>
 
 </div>
+
+
     <div class="container special-container">
         <div id="imageContainer" class="image-grid"></div>
     </div>
@@ -103,8 +110,7 @@
                 for (let i = 0; i < count; i++) {
                     var img = document.createElement('img');
                     img.src = imgURLs[0][i];
-                    img.style = "width:auto; height:200px; padding:10px; display: inline-block"
-                    //img.class = "img-display"
+                    img.style = "width:auto; height:180px; padding:10px; display: inline-block"
 
                     var link = document.createElement('a');
                     var baseURL = "https://artmuseum.princeton.edu/collections/objects/"
