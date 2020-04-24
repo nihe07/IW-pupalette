@@ -29,7 +29,7 @@
 			<!-- color + hex -->
 			<div class = "column" style="flex:10%">
 				<p class = "inputlabel">Color </p>
-				<input class = "inputbox" id="hexval" value="#c56b2a"></input>
+				<input class = "inputbox" id="hexval"></input>
 				
 			</div>
 
@@ -69,9 +69,6 @@
 		let searchCounts = new Array(mapids.length)
 
 
-		// let mini_ids = ["Canada", "Mexico", "Peru", "Ecuador", "Ethiopia", "Japan", "China", "Netherlands", "United_States", "Austria", "Italy", "UK", "Egypt"]
-
-
 		var slider = document.getElementById("slider");
 		var sliderInput = document.getElementById("sliderInput");
 		var hexval = document.getElementById("hexval");
@@ -84,24 +81,26 @@
 		let few = '#545454'
 		let none = '#333333'
 
-		slider.value = 8
-		sliderInput.value = "1700-1799";
-		circle.style.backgroundColor = "#c56b2a";
+		slider.value = 9
+		sliderInput.value = "1800-1849";
+		circle.style.backgroundColor = "#b86a32";
+		hexval.value ="#b86a32"
 
 
 
 	// Function determining color based on frequency of artworks
-		function getColor(value) {
+		function getColor(value, svgDoc, mapid) {
 			if (value > 20) {
 				color = most
+				svgDoc.getElementById(mapid).style.fill = color
 			}
 			else if (value > 0 && value <= 20){
-				color = few
+				svgDoc.getElementById(mapid).style.fill = few
 			}
 			else if (value == 0){
-				color = none
+				svgDoc.getElementById(mapid).style.fill = none
 			}
-			return color
+			//return color
 		}
 
 	// Get range of dates in string form (for colorMap function)
@@ -110,18 +109,18 @@
 			low = "";
 			high = "";
 
-			if (val == 0){low = "-15000"; high ="-2000"}
-			else if (val == 1) {low ="-2000"; high = "-1000"}
-			else if (val == 2) {low = "-1000"; high ="1"}
-			else if (val == 3) {low = "1"; high ="500"}
-			else if (val == 4) {low = "500"; high = "1000"}
-			else if (val == 5) {low = "1000"; high = "1500"}
-			else if (val == 6) {low = "1500"; high = "1600"}
-			else if (val == 7) {low = "1600"; high = "1700"}
-			else if (val == 8) {low = "1700"; high = "1800"}
-			else if (val == 9) {low = "1800"; high = "1850"}
-			else if (val == 10) {low = "1850"; high = "1900"}
-			else if (val == 11) {low = "1900"; high = "1945"}
+			if (val == 0){low = "-15000"; high ="-2001"}
+			else if (val == 1) {low ="-2000"; high = "-1001"}
+			else if (val == 2) {low = "-1000"; high ="0"}
+			else if (val == 3) {low = "1"; high ="499"}
+			else if (val == 4) {low = "500"; high = "999"}
+			else if (val == 5) {low = "1000"; high = "1499"}
+			else if (val == 6) {low = "1500"; high = "1599"}
+			else if (val == 7) {low = "1600"; high = "1699"}
+			else if (val == 8) {low = "1700"; high = "1799"}
+			else if (val == 9) {low = "1800"; high = "1849"}
+			else if (val == 10) {low = "1850"; high = "1899"}
+			else if (val == 11) {low = "1900"; high = "1944"}
 			else if (val == 12) {low = "1945"; high = "2021"}
 
 			range.push(low);
@@ -131,12 +130,16 @@
 		}
 
 
-	// Function to color the map accordingly 
-		function searchFunc(callback){
-			let rangeStr = getRange(slider.value).toString()
-			let rgbStr = circle.style.backgroundColor.match(/\d+/g).toString()
-			let mapidsStr = mapids.toString()
+	/*	var value1="value1";
+		var value2="value2";
+		var queryString = "?para1=" + value1 + "&para2=" + value2;
+		window.location.href = "country" + queryString*/
 
+		// <a id="mylink" xlink:href="\country\" target="_top"></a>
+
+
+	// Function to color the map accordingly 
+		function searchFunc(rangeStr, rgbStr, mapidsStr, callback){
 			$.ajax({
 			  type: "GET",
 			  url: "/colorSearch/",  // figure out how to link to colorSearch.py!!
@@ -150,24 +153,45 @@
 			  },
 			  success: callback,
 			  complete: function(data) {
-			  	$("#loader").hide();
+			  	
 			  }
 			});
 		} 
 
 
+
+//https://www.codeproject.com/Questions/795191/Passing-JavaScript-data-values-between-HTML-pages
+	
 		function colorMap(svgDoc) {
-			searchFunc(function(response){
+	  		let rangeStr = getRange(slider.value).toString()
+			let rgbStr = circle.style.backgroundColor.match(/\d+/g).toString()
+			let mapidsStr = mapids.toString()
+
+			searchFunc(rangeStr, rgbStr, mapidsStr, function(response){
+
+				if (rangeStr != getRange(slider.value).toString()) return;
+				if (rgbStr != circle.style.backgroundColor.match(/\d+/g).toString()) return;
+
 				searchCounts = response[0];
 			  	searchObjectIDs = response[1];
+			  	searchImageURLs = response[2];
 			  	for (i = 0; i < mapids.length; i++) {
-			  		fillColor = getColor(searchCounts[i])
-			  		svgDoc.getElementById(mapids[i]).style.fill = fillColor
+			  		getColor(searchCounts[i], svgDoc, mapids[i])
+			  		var country = svgDoc.getElementById(mapids[i])
+
+			  		let queryString = "?" + rangeStr + "&" + rgbStr + "&" + mapids[i];
+					let dest = "/country/" + queryString
+
+					let linkID = mapids[i] + "link"
+					let link = svgDoc.getElementById(linkID);
+					link.setAttribute('href', dest);
 			  	}
+			  	$("#loader").hide();
 			});
 		}
 
 // COLOR PICKER //
+// iro.js//
 	// Toggles showing color picker on click of circle
 		function showPicker() {
 		  var x = document.getElementById("boxPicker");
@@ -207,11 +231,31 @@
             var svgDoc = a.contentDocument;
             svgDoc.getElementById('Most').style.fill = most
 
+			const NamSpace= 'http://www.w3.org/2000/svg';
+
+
+            for (i = 0; i < mapids.length; i++) {
+			  		getColor(searchCounts[i], svgDoc, mapids[i])
+			  		var country = svgDoc.getElementById(mapids[i])
+
+			  		let el= svgDoc.getElementById(mapids[i]);
+				    const wrapper = document.createElementNS(NamSpace,'a');
+				    wrapper.setAttribute('href', "/country/");
+				    wrapper.setAttribute('target', '_parent')
+				    linkID = mapids[i] + "link"
+				    wrapper.setAttribute('id', linkID)
+				    el.parentNode.insertBefore(wrapper, el);
+				    el.parentNode.removeChild(el);
+				    wrapper.appendChild(el);
+			 }
+
 			// Fills circle and adjust box/hue slider colors & position with hex input
 			hexval.onchange = function() {
 				circle.style.backgroundColor = this.value;
 				boxPicker.addColor(this.value);
 				boxPicker.removeColor(0);
+				most = circle.style.backgroundColor;
+				svgDoc.getElementById('Most').style.fill = most
 				colorMap(svgDoc)
 			}
 
@@ -222,7 +266,7 @@
 			boxPicker.on(["color:change"], function(color){
 			  hexval.value = color.hexString;
 			  circle.style.backgroundColor = color.hexString;
-			  most = hexval.value;
+			  most = circle.style.backgroundColor;
 			});
 
 			boxPicker.on(["input:end"], function(input) {
