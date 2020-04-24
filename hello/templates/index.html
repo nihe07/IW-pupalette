@@ -5,7 +5,7 @@
 
 
 <div style="background-color: #262626">
-	<div class="container special-container">
+	<div class="container special-container" style="height:175px">
 	   <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
 		 <div style="width: 75%">
 		   <p style="color:#BDBDBD; font-size: 12px; font-weight: 300">Explore the use of color in the Princeton University Art Museum's collection, over time and around the world! Select or text input a date and color, and watch the map light up with results. Click into countries to view artworks.  </p>
@@ -24,7 +24,7 @@
 			</div>
 
 			<!-- space between -->
-			<div class = "column" style="flex:5%"> </div>
+			<div class = "column" style="flex:15%"> </div>
 
 			<!-- color + hex -->
 			<div class = "column" style="flex:10%">
@@ -37,7 +37,7 @@
 			<!-- <div class = "column" style="flex:5%"> </div> -->
 
 			<!-- color circle -->
-			<div class = "column" style="flex:30%">
+			<div class = "column" style="flex:20%">
 				<div id = "circle" class = "circle" onclick="showPicker()"></div>
 				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px; ">
 		        </div>
@@ -56,16 +56,9 @@
  	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
 </div>
 
-<!-- https://www.coffee-break-designs.com/labs/svg_stripe_generator/ -->
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-	
-	<rect width="100%" height="100%" fill="url(#pattern_KO5uZ)" :opacity="1" />
-</svg>
 	<script>
 
 // ESSENTIAL VARIABLES & FUNCTIONS//
-// maybe change Cote d Ivoire
-	// Country IDs ** missing some countries in the svg map (refer to google doc) 
 
 		let mapids = ['Canada', 'Mexico', 'Peru', 'Ecuador', 'Ethiopia', 'Japan', 'China', 'Netherlands', 'United_States', 'Austria', 'Italy', 'UK', 'Egypt', 'Indonesia', 'Belgium', 'Syria', 'Israel', 'Cote_d_Ivoire', 'Lebanon', 'France', 'Germany', 'Spain', 'Australia', 'Greece', 'Colombia', 'Switzerland', 'Denmark', 'Sri_Lanka', 'Thailand', 'Cambodia', 'Panama', 'Samoa', 'Algeria', 'Tibet', 'Guatemala', 'Turkey', 'Nigeria', 'Serbia', 'Portugal', 'Ireland', 'Norway', 'Democratic_Republic_of_the_Congo', 'India', 'Afghanistan', 'Palestine', 'Iran', 'French_Polynesia', 'Sweden', 'Kenya', 'Vietnam', 'Ukraine', 'Brazil', 'Nicaragua', 'Korea', 'Cyprus', 'Iraq', 'Russia', 'Bolivia', 'Tunisia', 'Costa_Rica', 'Argentina', 'Angola', 'Jordan', 'Nepal', 'Pakistan', 'Ghana', 'Mali', 'Gabon', 'St._Lucia', 'El_Salvador', 'Papua_New_Guinea', 'Honduras', 'Belize', 'Burkina_Faso', 'Cameroon', 'Cuba', 'Liberia', 'Chile', 'Guinea', 'Grenada', 'Romania', 'Hungary', 'New_Caledonia', 'Tanzania', 'Madagascar', 'Zimbabwe', 'Central_African_Republic', 'Dominican_Republic', 'Rwanda', 'South_Africa', 'Solomon_Islands', 'Fiji', 'Myanmar', 'Uruguay', 'Sierra_Leone', 'Venezuela', 'Morocco', 'Benin', 'Bermuda', 'Philippines', 'Poland', 'Croatia', 'Mongolia']
 
