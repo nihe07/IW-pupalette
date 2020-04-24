@@ -42,7 +42,7 @@
 
 
     <div class="container special-container">
-        <div id="imageContainer" class="image-grid"></div>
+        <div id="imageContainer" class="image-grid inputlabel"></div>
     </div>
 
 
@@ -121,6 +121,11 @@
                 count = response[0];
                 objectIDs = response[1];
                 imgURLs = response[2];
+
+                if (count == 0) {
+                    document.getElementById('imageContainer').innerHTML= "No Results"
+                    return
+                }
 
 
                 var container = document.getElementById('imageContainer');
