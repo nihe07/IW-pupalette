@@ -3,32 +3,127 @@
 
 {% block content %}
 
- <div style="background-color: #262626">
-     Country page
-     
-    <div id="imageContainer"></div>
+<div style="background-color: #262626">
+    <div class="container special-container">
+       <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
+    </div>
+
+       <div class = "container">
+        <div class="row" style="padding-bottom:20px">
+            <!-- Titles -->
+            <div class = "column" style="flex:55%">
+                <p id="country" class = "inputlabel">Country</p>
+                <p id="date" class = "inputlabel">Date</p>
+            </div>
+
+            <!-- space between -->
+            <div class = "column" style="flex:15%"> </div>
+
+            <!-- color circle -->
+            <div class = "column" style="flex:30%">
+                <div id = "color" class = "no-click-circle"></div>
+            </div>
+
+        </div>
+       </div> 
+
+       <!--Go Back button FIX FUNCTIONALITY -->
+    <div class = "container special-container" style="padding-top:0">
+        <button class="inputbox" style="color:white" onclick="goBack()">< Back to Map</button>
+    </div>
+
+
+    
+    <div class = "loader" id="loader" style="display: none;"></div>
+
+</div>
+    <div class="container special-container">
+        <div id="imageContainer" class="image-grid"></div>
+    </div>
+
+
+
         <script>
+            function goBack() {
+                window.history.back();
+            }
+
             // https://stackoverflow.com/questions/29488371/how-to-add-a-list-of-images-to-the-document-from-an-array-of-urls
             // imgs is an array of image urls. modify so imgs is filled with urls from database.
-        var imgs = ['https://puam-loris.aws.princeton.edu/loris/y1975-17.jp2/full/300,/0/default.jpg', 
-        'https://puam-loris.aws.princeton.edu/loris/y1975-17.jp2/full/300,/0/default.jpg', 
-        'https://puam-loris.aws.princeton.edu/loris/y1975-17.jp2/full/300,/0/default.jpg'];
-        var container = document.getElementById('imageContainer');
-        var docFrag = document.createDocumentFragment();
+
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var queries = queryString.split("&");
+        let rangeStr = queries[0];
+        let rgbStr = queries[1];
+        let mapidsStr = queries[2];
 
 
-        imgs.forEach(function(cur, index, arr) {
-            var img = document.createElement('img');
-            img.src = cur;
-            docFrag.appendChild(img);
-        });
+        let country = mapidsStr.replace("_", " ")
+        let date = rangeStr.replace(",", "-")
+        let color = "rgb("+ rgbStr+ ")"
+
+            
+        document.getElementById("country").innerHTML = country;
+        document.getElementById("date").innerHTML = date;
+        document.getElementById("color").style.backgroundColor =color;
+
+                // Function to color the map accordingly 
+        function searchFunc(rangeStr, rgbStr, mapidsStr, callback){
+            // let rangeStr = "1800,1849" // get the range from url 
+            // let rgbStr = "184,106,50" // get the rgbstr from url 
+            // let mapidsStr = "United_States" // get mapid from url 
+            $.ajax({
+              type: "GET",
+              url: "/colorSearch/",  // figure out how to link to colorSearch.py!!
+              data: { 
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                searchRGB: rgbStr,
+                dateRange: rangeStr,
+                mapIDs: mapidsStr},
+              beforeSend: function(){
+                $("#loader").show();
+              },
+              success: callback,
+              complete: function(data) {
+                $("#loader").hide();
+              }
+            });
+        } 
+
+        function getImages() {
+            searchFunc(rangeStr, rgbStr, mapidsStr, function(response){
+                count = response[0];
+                objectIDs = response[1];
+                imgURLs = response[2];
 
 
-        container.appendChild(docFrag);
+                var container = document.getElementById('imageContainer');
+
+                for (let i = 0; i < count; i++) {
+                    var img = document.createElement('img');
+                    img.src = imgURLs[0][i];
+                    img.style = "width:auto; height:200px; padding:10px; display: inline-block"
+                    //img.class = "img-display"
+
+                    var link = document.createElement('a');
+                    var baseURL = "https://artmuseum.princeton.edu/collections/objects/"
+                    objectID = objectIDs[0][i]
+
+                    link.setAttribute("href", baseURL+objectID);
+                    link.setAttribute("target", "_blank");
+                    link.appendChild(img)
+
+                    container.appendChild(link);
+                }
+            });
+            
+        }
+
+        getImages()
+        
 
         </script>
-    </div>
-</div>
 
  
 
