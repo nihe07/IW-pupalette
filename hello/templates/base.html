@@ -19,8 +19,17 @@
       background-color: black;
     }
 
-    .image-display {
-      width: 180px;
+    .image-grid {
+      padding-top: 10px;
+      display: flex;
+      flex-wrap:wrap;
+    }
+
+    .img-display {
+      width:300px; 
+      height: auto; 
+      padding:40px; 
+      display: inline-block;
     }
 
 
@@ -30,7 +39,6 @@
       padding-right: 50px; 
       padding-top: 20px
     }
-
 
     .colorentry {
       width: 19%;
@@ -42,7 +50,6 @@
     }
 
     .inputlabel {
-    	color:white; 
     	font-weight: bold; 
     	font-size: 20px; 
     	color: #A0A0A0;
@@ -71,11 +78,19 @@
       flex: 50%;
     }
 
+     .no-click-circle {
+      margin-left: 10px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      border-width: 0;
+    }
+
     .circle {
       margin-left: 10px;
   	  width: 100px;
   	  height: 100px;
-  	  background-color: #c56b2a;
   	  border-radius: 50%;
   	  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   	  border-width: 0;
