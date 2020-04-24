@@ -64,13 +64,34 @@
 
 
         let country = mapidsStr.replace(/_/g, " ")
-        let date = rangeStr.replace(",", "-")
+        let date = getDate(rangeStr)
         let color = "rgb("+ rgbStr+ ")"
 
             
         document.getElementById("country").innerHTML = country;
         document.getElementById("date").innerHTML = date;
         document.getElementById("color").style.backgroundColor =color;
+
+
+        function getDate(dateStr) {
+            let date = ""
+
+            if (dateStr=="-15000,-2001") date = "15000 - 2001 BC";
+            else if (dateStr=="-2000,-1001") date = "2000 - 1001 BC";
+            else if (dateStr=="-1000,0") date = "1000 BC - 0 AD";
+            else if (dateStr=="1,499") date = "1 - 499 AD";
+            else if (dateStr=="500,999") date = "400 - 999 AD";
+            else if (dateStr=="1000,1499") date = "1000 - 1499";
+            else if (dateStr=="1500,1599") date = "1500 - 1599";
+            else if (dateStr=="1600,1699") date = "1600 - 1699";
+            else if (dateStr=="1700,1799") date = "1700 - 1799";
+            else if (dateStr=="1800,1849") date = "1800 - 1849";
+            else if (dateStr=="1850,1899") date = "1850 - 1899";
+            else if (dateStr=="1900,1944") date = "1900 - 1944";
+            else if (dateStr=="1945,2021") date = "1945 - Present";
+
+            return date
+        }
 
                 // Function to color the map accordingly 
         function searchFunc(rangeStr, rgbStr, mapidsStr, callback){
