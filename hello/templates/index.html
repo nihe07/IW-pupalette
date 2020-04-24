@@ -127,14 +127,6 @@
 		}
 
 
-	/*	var value1="value1";
-		var value2="value2";
-		var queryString = "?para1=" + value1 + "&para2=" + value2;
-		window.location.href = "country" + queryString*/
-
-		// <a id="mylink" xlink:href="\country\" target="_top"></a>
-
-
 	// Function to color the map accordingly 
 		function searchFunc(rangeStr, rgbStr, mapidsStr, callback){
 			$.ajax({
@@ -156,9 +148,7 @@
 		} 
 
 
-
 //https://www.codeproject.com/Questions/795191/Passing-JavaScript-data-values-between-HTML-pages
-	
 		function colorMap(svgDoc) {
 	  		let rangeStr = getRange(slider.value).toString()
 			let rgbStr = circle.style.backgroundColor.match(/\d+/g).toString()
@@ -223,13 +213,14 @@
 
 		var a = document.getElementById("alphasvg");
 	    a.addEventListener("load",function(){
-	    	most = circle.style.backgroundColor
 	       // get the inner DOM of alpha.svg
             var svgDoc = a.contentDocument;
             
 
             circle.style.backgroundColor = hexval.value
             most = hexval.value
+            boxPicker.addColor(most);
+			boxPicker.removeColor(0);
             svgDoc.getElementById('Most').style.fill = most
 
 			const NamSpace= 'http://www.w3.org/2000/svg';
