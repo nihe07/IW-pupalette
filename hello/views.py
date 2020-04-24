@@ -33,7 +33,10 @@ def info(request):
 
 # returns the ids of objects, given the desired country and date range
 # to be used in findFreq
-def getIDS(values):
+def getIDS_URLS(values):
+	ids = []
+	urls = []
+
 	conn = sqlite3.connect('puam.db')
 	c = conn.cursor()
 	query = ''' SELECT ID
@@ -41,19 +44,28 @@ def getIDS(values):
 				WHERE COUNTRY = ? AND DATE BETWEEN ? AND ?'''
 	c.execute(query, values)
 
-	ids = []
+	
 	for idext in c.fetchall():
 		ids.append(idext[0])
 
+	query2 = ''' SELECT IMAGE
+				FROM OBJECTS
+				WHERE COUNTRY = ? AND DATE BETWEEN ? AND ?'''
+	c.execute(query2, values)
+
+	for urlsext in c.fetchall():
+		urls.append(urlsext[0])
+
 	conn.close();
 
-	return ids
+
+	return ids, urls
 
 # given two colors, determine if the colors are a 'match' using euclidean distance
 def isMatch(searchRGB, imageRGB):
 	dist = dis.euclidean(searchRGB, imageRGB)
 	isMatch = False
-	if (dist <= 70): 
+	if (dist <= 50): 
 		isMatch = True
 	return isMatch
 
@@ -61,6 +73,7 @@ def isMatch(searchRGB, imageRGB):
 def findFreq(searchRGB, values):
 	count = 0
 	objectIDs = []
+	imageURLs = []
 
 	#conn = sqlite3.connect('mini-puam.db')
 	conn = sqlite3.connect('puam.db')
@@ -76,7 +89,7 @@ def findFreq(searchRGB, values):
 
 	c.execute(query, values)
 	palettes= c.fetchall();
-	ids = getIDS(values);
+	ids, urls = getIDS_URLS(values);
 
 	i = 0;
 	for palette in palettes:
@@ -91,18 +104,20 @@ def findFreq(searchRGB, values):
 		if (isMatch(searchRGB, rgb1) or isMatch(searchRGB, rgb2) or isMatch(searchRGB, rgb3) or isMatch(searchRGB, rgb4) or isMatch(searchRGB, rgb5)):
 			count = count + 1
 			objectIDs.append(ids[i])
+			imageURLs.append(urls[i])
 
 		i = i+1
 
 	conn.close();
 
-	return count, objectIDs
+	return count, objectIDs, imageURLs
 
 def colorSearch(request):
 	if request.method == 'GET':
 		data = []
 		searchCounts = []
 		searchObjectIDs = []
+		searchImageURLs = []
 
 		getrgb = request.GET['searchRGB']
 		rgb_str = getrgb.split(',')
@@ -118,12 +133,14 @@ def colorSearch(request):
 		for i in range (len(mapids)):
 			country = mapids[i].replace("_", " ")
 			values = (country, dates[0], dates[1])
-			count, objectIDs = findFreq(searchRGB, values)
+			count, objectIDs, imageURLs = findFreq(searchRGB, values)
 			searchCounts.append(count)
 			searchObjectIDs.append(objectIDs)
+			searchImageURLs.append(imageURLs)
 
 		data.append(searchCounts)
 		data.append(searchObjectIDs)
+		data.append(searchImageURLs)
 	return JsonResponse(data, safe=False)
 
 
