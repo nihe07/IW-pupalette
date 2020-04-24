@@ -61,11 +61,66 @@ def getIDS_URLS(values):
 
 	return ids, urls
 
+
+def rgb2xyz(rgb):
+	m = [[0.41239080, 0.35758434, 0.18048079],[0.21263901, 0.71516868, 0.07219232],[0.01933082, 0.11919478, 0.95053215]]
+	xyz = np.matmul(m, rgb)
+	return xyz
+
+
+def xyz2lab(xyz):
+	RefX = 100
+	RefY = 100
+	RefZ = 100
+	var_X = xyz[0] / RefX
+	var_Y = xyz[1] / RefY
+	var_Z = xyz[2] / RefZ
+  
+	if( var_X > 0.008856 ):
+	  var_X = var_X **( 1/3 )
+	else:
+	  var_X = ( 7.787 * var_X ) + ( 4 / 29 )
+	if( var_Y > 0.008856 ):
+	  var_Y = var_Y **( 1/3 )
+	else:
+	  var_Y = ( 7.787 * var_Y ) + ( 4 / 29)
+	if( var_Z > 0.008856 ):
+	  var_Z = var_Z **( 1/3 )
+	else:
+	  var_Z = ( 7.787 * var_Z ) + ( 4 / 29 )
+
+	L = (116 * var_Y ) - 16
+	a = 500 * (var_X - var_Y)
+	b = 200 * (var_Y - var_Z)
+
+	return (L, a, b)
+
+def deltE(lab1, lab2):
+	dL = lab1[0] - lab2[0]
+	c1 = np.sqrt(lab1[1]**2 + lab1[2]**2)
+	c2 = np.sqrt(lab2[1]**2 + lab2[2]**2)
+	dC = c1 - c2
+	dE = dis.euclidean(lab1, lab2)
+	dH = np.sqrt(dE**2 - dL**2 - dC**2)
+	sL = 1 
+	sC = 1 + 0.045 * c1
+	sH = 1 + 0.014 * c1
+	a = (dL/sL)**2
+	b = (dC/sC)**2
+	c = (dH/sH)**2
+	delt = np.sqrt(a + b + c)
+
+	return delt
 # given two colors, determine if the colors are a 'match' using euclidean distance
 def isMatch(searchRGB, imageRGB):
-	dist = dis.euclidean(searchRGB, imageRGB)
 	isMatch = False
-	if (dist <= 50): 
+	xyz1 = rgb2xyz(searchRGB)
+	xyz2 = rgb2xyz(imageRGB)
+	lab1 = xyz2lab(xyz1)
+	lab2 = xyz2lab(xyz2)
+	delt = deltE(lab1, lab2)
+
+	if (delt <= 10):
 		isMatch = True
 	return isMatch
 
