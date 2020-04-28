@@ -111,6 +111,7 @@ def deltE(lab1, lab2):
 	delt = np.sqrt(a + b + c)
 
 	return delt
+
 # given two colors, determine if the colors are a 'match' using euclidean distance
 def isMatch(searchRGB, imageRGB):
 	isMatch = False
@@ -120,7 +121,7 @@ def isMatch(searchRGB, imageRGB):
 	lab2 = xyz2lab(xyz2)
 	delt = deltE(lab1, lab2)
 
-	if (delt <= 10):
+	if (delt <= 11):
 		isMatch = True
 	return isMatch
 
