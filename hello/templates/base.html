@@ -18,7 +18,7 @@
     body {
       background-color: black;
     }
-
+    
     .header {
       height: 300px;
     }
@@ -119,6 +119,22 @@
       transition: opacity .2s;
     }
 
+    .sliderseg1 {
+      float: left;
+      width: 20px;
+      height: 20px;
+      background-color: black;
+
+    }
+
+    .sliderseg2 {
+      float: left;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+
+    }
+
     .loader {
       position: absolute;
       top:450px;
@@ -165,6 +181,9 @@
 
 </head>
 <body>
+{% load static %}
+
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
 <div style="background-color: #262626;">
    <div class = "container" style="padding-top: 30px; padding-left: 50px; padding-right: 50px; color: white;">
