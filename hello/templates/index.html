@@ -3,7 +3,7 @@
 
 {% block content %}
 
-
+<div class = "overlay" onclick="hidePicker()">
 <div style="background-color: #262626">
 	<div class="container special-container" style="height:175px">
 	   <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
@@ -38,7 +38,7 @@
 
 			<!-- color circle -->
 			<div class = "column" style="flex:20%">
-				<div id = "circle" class = "circle" onclick="showPicker()"></div>
+				<div id = "circle" class = "circle" onclick="showPicker(event)"></div>
 				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px; ">
 		        </div>
 
@@ -52,8 +52,9 @@
 
 
 
-<div class = "container special-container" style="padding-bottom: 0;">
+<div class = "container special-container" style="padding-bottom: 0;" >
  	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
+</div>
 </div>
 
 	<script>
@@ -213,22 +214,22 @@
 // COLOR PICKER //
 // iro.js//
 	// Toggles showing color picker on click of circle
-		function showPicker() {
+		function showPicker(event) {
 		  var x = document.getElementById("boxPicker");
 		  if (x.style.display === "none") {
 		    x.style.display = "block";
-		  }
-		  else {
-		  	x.style.display = "none"
+		    event.stopPropagation();
 		  }
 		}
 
-		// function hidePicker() {
-		// 	var x = document.getElementById("boxPicker");
-		// 	if (x.style.display === "block") {
-		//     	x.style.display = "none";
-		//     }
-		// }
+		function hidePicker() {
+			var x = document.getElementById("boxPicker");
+
+			
+			if (x.style.display === "block") {
+		    	x.style.display = "none";
+		    }
+		}
 
 	// Box & hue slider from iro.js 
 		var boxPicker = new iro.ColorPicker("#boxPicker", {
