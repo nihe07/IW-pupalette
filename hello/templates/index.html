@@ -12,19 +12,19 @@
 		</div>
 	</div>
 
-	<div class = "container">
+	<div class = "container" >
 		<div class="row" style="padding-bottom:20px">
 			<!-- date slider -->
 			<div class = "column" style="flex:55%">
 				<p class = "inputlabel">Date</p>
 				<input class = "inputbox" id="sliderInput"></input>
 				<div class="slidecontainer">
-		 			<input type="range" min="0" max="12" value="8" class="slider" id="slider">
+		 			<input type="range" min="0" max="12" value="9" class="slider" id="slider">
 				</div>
 			</div>
 
 			<!-- space between -->
-			<div class = "column" style="flex:15%"> </div>
+			<div class = "column" style="flex:15%" > </div>
 
 			<!-- color + hex -->
 			<div class = "column" style="flex:10%">
@@ -162,17 +162,50 @@
 				searchCounts = response[0];
 			  	searchObjectIDs = response[1];
 			  	searchImageURLs = response[2];
+
+			  	const NamSpace = 'http://www.w3.org/2000/svg'
+
+			  	// iterate through all mapids 
 			  	for (i = 0; i < mapids.length; i++) {
 			  		getColor(searchCounts[i], svgDoc, mapids[i])
-			  		var country = svgDoc.getElementById(mapids[i])
+				  	let cnt = searchCounts[i]
+				  	let el = svgDoc.getElementById(mapids[i]);
 
-			  		let queryString = "?" + rangeStr + "&" + rgbStr + "&" + mapids[i];
-					let dest = "/country/" + queryString
+				  	// if there are items that match the search
+				  	if (cnt > 0){
+				  		let queryString = "?" + rangeStr + "&" + rgbStr + "&" + mapids[i];
+						let dest = "/country/" + queryString
+						let linkID = mapids[i] + "link"
+				  		// if there isn't already a link, make a new link
+				  		if (el.parentNode == svgDoc.getElementById("svg2")) {
+				  			const wrapper = document.createElementNS(NamSpace,'a');
+							wrapper.setAttribute('href', dest);
+							wrapper.setAttribute('target', '_parent')
+							linkID = mapids[i] + "link"
+							wrapper.setAttribute('id', linkID)
+							el.parentNode.insertBefore(wrapper, el);
+							el.parentNode.removeChild(el);
+							wrapper.appendChild(el);
+				  		}
 
-					let linkID = mapids[i] + "link"
-					let link = svgDoc.getElementById(linkID);
-					link.setAttribute('href', dest);
-			  	}
+				  		// else if there is a link, set a new link
+				  		else {
+							let link = svgDoc.getElementById(linkID);
+							link.setAttribute('href', dest);
+				  		}
+				  	}
+
+				  	// if there are no items that match the search
+				  	else if (cnt == 0){
+				  		// if there is currently a link, delete it
+				  		if (el.parentNode != svgDoc.getElementById("svg2")) {
+				  			linkpar = el.parentNode;
+				  			svgDoc.getElementById("svg2").removeChild(linkpar);
+				  			svgDoc.getElementById("svg2").appendChild(el);
+				  		}
+				  	}
+				}
+
 			  	$("#loader").hide();
 			});
 		}
@@ -184,10 +217,18 @@
 		  var x = document.getElementById("boxPicker");
 		  if (x.style.display === "none") {
 		    x.style.display = "block";
-		  } else {
-		    x.style.display = "none";
+		  }
+		  else {
+		  	x.style.display = "none"
 		  }
 		}
+
+		// function hidePicker() {
+		// 	var x = document.getElementById("boxPicker");
+		// 	if (x.style.display === "block") {
+		//     	x.style.display = "none";
+		//     }
+		// }
 
 	// Box & hue slider from iro.js 
 		var boxPicker = new iro.ColorPicker("#boxPicker", {
@@ -223,21 +264,7 @@
 			boxPicker.removeColor(0);
             svgDoc.getElementById('Most').style.fill = most
 
-			const NamSpace= 'http://www.w3.org/2000/svg';
-
-            for (i = 0; i < mapids.length; i++) {
-			  		getColor(searchCounts[i], svgDoc, mapids[i])
-
-			  		let el= svgDoc.getElementById(mapids[i]);
-				    const wrapper = document.createElementNS(NamSpace,'a');
-				    wrapper.setAttribute('href', "/country/");
-				    wrapper.setAttribute('target', '_parent')
-				    linkID = mapids[i] + "link"
-				    wrapper.setAttribute('id', linkID)
-				    el.parentNode.insertBefore(wrapper, el);
-				    el.parentNode.removeChild(el);
-				    wrapper.appendChild(el);
-			 }
+            colorMap(svgDoc)
 
 			// Fills circle and adjust box/hue slider colors & position with hex input
 			hexval.onchange = function() {
@@ -249,10 +276,6 @@
 				colorMap(svgDoc)
 			}
 
-			boxPicker.on(["color:init"], function(color) {
-			 	colorMap(svgDoc)
-			});
-
 			boxPicker.on(["color:change"], function(color){
 			  hexval.value = color.hexString;
 			  circle.style.backgroundColor = color.hexString;
@@ -260,8 +283,8 @@
 			});
 
 			boxPicker.on(["input:end"], function(input) {
-			 	colorMap(svgDoc)
 			 	svgDoc.getElementById('Most').style.fill = most
+			 	colorMap(svgDoc)
 			});
 
 			// changing the slider input based on slider location
