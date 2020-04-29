@@ -39,7 +39,7 @@
 			<!-- color circle -->
 			<div class = "column" style="flex:20%">
 				<div id = "circle" class = "circle" onclick="showPicker(event)"></div>
-				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px; ">
+				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px;" onclick="keepPicker(event)">
 		        </div>
 
 			</div>
@@ -218,14 +218,20 @@
 		  var x = document.getElementById("boxPicker");
 		  if (x.style.display === "none") {
 		    x.style.display = "block";
-		    event.stopPropagation();
+		    
 		  }
+		  event.stopPropagation();
+		}
+
+		function keepPicker(event) {
+		  var x = document.getElementById("boxPicker");
+		  x.style.display = "block";
+		  event.stopPropagation();
+
 		}
 
 		function hidePicker() {
 			var x = document.getElementById("boxPicker");
-
-			
 			if (x.style.display === "block") {
 		    	x.style.display = "none";
 		    }
