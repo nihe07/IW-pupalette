@@ -606,8 +606,8 @@
 	C289.8,239.9,289.6,239.2,289.4,238.6z"/>
 <path id="Legend" class="st1" d="M129.9,590.7H12.4c-3.6,0-6.5-2.9-6.5-6.5V454.3c0-3.6,2.9-6.5,6.5-6.5h117.4
 	c3.6,0,6.5,2.9,6.5,6.5v129.8C136.4,587.8,133.5,590.7,129.9,590.7z"/>
-<text transform="matrix(1 0 0 1 58.8584 482.2207)" class="st2 st3 st4">More than 20</text>
-<text transform="matrix(1 0 0 1 58.8579 524.3086)" class="st2 st3 st4">Fewer than 20</text>
+<text transform="matrix(1 0 0 1 58.8584 482.2207)" class="st2 st3 st4">More than 10</text>
+<text transform="matrix(1 0 0 1 58.8579 524.3086)" class="st2 st3 st4">Fewer than 10</text>
 <text transform="matrix(1 0 0 1 58.8584 567.5801)" class="st2 st3 st4">None</text>
 <ellipse id="Few" transform="matrix(2.614528e-03 -1 1 2.614528e-03 -485.8667 555.0111)" class="st5" cx="35.3" cy="521.1" rx="15.1" ry="15.1"/>
 <ellipse id="NoneCircle" transform="matrix(1 -1.113259e-03 1.113259e-03 1 -0.6265 3.964438e-02)" class="st0" cx="35.3" cy="562.8" rx="15.1" ry="15.1"/>
