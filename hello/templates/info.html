@@ -3,6 +3,52 @@
 
 {% block content %}
 
- <div class="container" style="color:white">Information page</div>
+ <div style="background-color: #262626">
+    <div class="container special-container">
+       <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
+       <p id="country" class = "inputlabel">About</p>
+    </div>
+
+</div>
+
+<div class = "container special-container">
+
+	<div style="padding-bottom: 40px">
+		<div class="subheader-info">Implementation</div>
+		<div class="body-info">
+			Check out our github repository for implementation details <a href= "https://github.com/nihe07/IW-pupalette.git" target="_blank"> here</a>.
+		</div>
+				
+		<div class = "body-info" style= "color: #E1E1E1; font-style:italic">Disclaimers</div>
+		<div class = "body-info" style="padding-top: 0px">Our data is taken from the Princeton University Art Museum online database, but only represents a fraction of the museum’s artworks (as we have opted to show works that have relevant image, country, and date information available).</div>
+		<div class = "body-info">PU Palette compares colors in the CIE L*a*b* color space,  using Delta E94 for comparative  calcluations. While this results in fairly accurate results in line with how humans perceive  color difference, there are still some inaccuracies in the Delta E94 itself, typically falling short  when calculating the perceived lightness of colors.</div>
+	</div>
+
+	<div style="padding-bottom: 40px"> 
+		<div class="subheader-info">Creators</div>
+		<div class="row" style="padding-top: 30px;  padding-left: 20px; padding-bottom: 10px">
+			<div class = "column"><img class = "profile-pic" src="{% static 'nina.jpg'%}"></img></div>
+			<div class = "column"><div class = "profile-pic"></div></div>
+			<div class = "column" style="flex:35%"></div>
+		</div>
+		<div class="row" style="padding-top:0px; padding-left: 0px; padding-bottom: 10px">
+			<div class = "column" style="color: #d9d9d9; padding-left: 40px">Nina He '21</div>
+			<div class = "column" style="color: #a1a1a1; padding-left: 25px">Ezra Zinberg '21</div>
+			<div class = "column" style="flex:35%"></div>
+		</div>
+	</div>
+
+	<div style="padding-bottom: 40px"> 
+		<div class="subheader-info">Acknowledgements</div>
+		<div class="body-info"> Thank you to Professor Brian Kernighan and Professor Zoe LeBlanc for their guidance, as well as to all the students of IW05 for their continued feedback. Also, a special shoutout to Kevin He, for his help with CSS and frontend development advice!</div>
+	</div>
+
+	<div style="padding-bottom: 40px"> 
+		<div class="subheader-info">User Feedback</div>
+		<div class="body-info">If you have any questions, concerns, or general feedback for the user experience of PU Palette, please write a response <a href="https://forms.gle/gR6YL1WmTi9Gg8uEA" target="_blank"> here</a>!</div>
+
+	</div>
+	
+</div>
 
 {% endblock %}
