@@ -52,7 +52,7 @@
 
 
 
-<div class = "container special-container" onclick="hidePicker()" style="padding-bottom: 0;" >
+<div class = "container special-container" style="padding-bottom: 0;" onclick="hidePicker()">
  	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
 </div>
 
@@ -87,11 +87,11 @@
 
 	// Function determining color based on frequency of artworks
 		function getColor(value, svgDoc, mapid) {
-			if (value > 10) {
+			if (value > 20) {
 				svgDoc.getElementById("bg-fill").style.fill = most
 				svgDoc.getElementById(mapid).style.fill = "url(#diag)"
 			}
-			else if (value > 0 && value <= 10){
+			else if (value > 0 && value <= 20){
 				svgDoc.getElementById(mapid).style.fill = few
 			}
 			else if (value == 0){
