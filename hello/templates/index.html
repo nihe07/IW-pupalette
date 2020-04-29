@@ -87,11 +87,11 @@
 
 	// Function determining color based on frequency of artworks
 		function getColor(value, svgDoc, mapid) {
-			if (value > 20) {
+			if (value > 10) {
 				svgDoc.getElementById("bg-fill").style.fill = most
 				svgDoc.getElementById(mapid).style.fill = "url(#diag)"
 			}
-			else if (value > 0 && value <= 20){
+			else if (value > 0 && value <= 10){
 				svgDoc.getElementById(mapid).style.fill = few
 			}
 			else if (value == 0){
