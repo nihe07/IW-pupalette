@@ -112,7 +112,7 @@ def isMatch(searchRGB, imageRGB):
 	lab2 = xyz2lab(xyz2)
 	delt = deltE(lab1, lab2)
 
-	if (delt <= 10.5):
+	if (delt <= 10):
 		isMatch = True
 	return isMatch
 
