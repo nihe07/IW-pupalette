@@ -40,7 +40,7 @@
 
     <div class = "container special-container" style="padding-bottom:0px; padding-right: 10%">
         <label class="switch">
-            <input type="checkbox" onclick="toggleColors()">
+            <input id="check" type="checkbox" onclick="toggleColors()">
             <span class="toggle" id = "toggle-bg"></span>
         </label>
         <div id = "toggle" style="color:#BDBDBD; font-size: 12px; font-weight: bold; float: right;"> View Colors &nbsp
@@ -112,7 +112,7 @@
               },
               success: callback,
               complete: function(data) {
-                $("#loader").hide();
+                $("#loader").hide();  
               }
             });
         } 
@@ -196,6 +196,7 @@
 
                     container.appendChild(elem);
                 }
+
             });
             
         }
@@ -208,14 +209,12 @@
 
             for (i = 0; i < allIms.length; i++) {
                 x = allIms[i]
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                    toggle.innerHTML = "View Colors &nbsp";
-
-                } else {
+                if (document.getElementById("check").checked) {
                     x.style.display = "none";
                     toggle.innerHTML = "View Images &nbsp";
-
+                } else {
+                    x.style.display = "block";
+                    toggle.innerHTML = "View Colors &nbsp";
                 }
             }
         }
