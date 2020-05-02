@@ -51,7 +51,6 @@
 </div>
 
 
-
 <div class = "container special-container" style="padding-bottom: 0;" onclick="hidePicker()">
  	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
 </div>
@@ -131,7 +130,7 @@
 		function searchFunc(rangeStr, rgbStr, mapidsStr, callback){
 			$.ajax({
 			  type: "GET",
-			  url: "/colorSearch/",  // figure out how to link to colorSearch.py!!
+			  url: "/colorFreq/", 
 			  data: { 
 			  	csrfmiddlewaretoken: '{{ csrf_token }}',
 			  	searchRGB: rgbStr,
@@ -160,8 +159,6 @@
 				if (rgbStr != circle.style.backgroundColor.match(/\d+/g).toString()) return;
 
 				searchCounts = response[0];
-			  	searchObjectIDs = response[1];
-			  	searchImageURLs = response[2];
 
 			  	const NamSpace = 'http://www.w3.org/2000/svg'
 
