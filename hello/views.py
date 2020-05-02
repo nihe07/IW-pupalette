@@ -15,6 +15,7 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     return render(request, "index.html")
 
+
 def country(request):
     return render(request, "country.html")
 
@@ -24,33 +25,47 @@ def info(request):
 
 # returns the ids of objects, given the desired country and date range
 # to be used in findFreq
-def getIDS_URLS(values):
+def getPALS_IDS_URLS(values):
+	pals = []
 	ids = []
 	urls = []
 
 	conn = sqlite3.connect('puam.db')
 	c = conn.cursor()
-	query = ''' SELECT ID
+
+	query1 = ''' SELECT COLOR1R, COLOR1G, COLOR1B, 
+	COLOR2R, COLOR2G, COLOR2B, 
+	COLOR3R, COLOR3G, COLOR3B, 
+	COLOR4R, COLOR4G, COLOR4B, 
+	COLOR5R, COLOR5G, COLOR5B
 				FROM OBJECTS
 				WHERE COUNTRY = ? AND DATE BETWEEN ? AND ?'''
-	c.execute(query, values)
+	c.execute(query1, values)
+	for pal in c.fetchall():
+		pals.append(pal)
 
-	
-	for idext in c.fetchall():
-		ids.append(idext[0])
 
-	query2 = ''' SELECT IMAGE
+
+	query2 = ''' SELECT ID
 				FROM OBJECTS
 				WHERE COUNTRY = ? AND DATE BETWEEN ? AND ?'''
 	c.execute(query2, values)
+	for idext in c.fetchall():
+		ids.append(idext[0])
 
+
+
+	query3 = ''' SELECT IMAGE
+				FROM OBJECTS
+				WHERE COUNTRY = ? AND DATE BETWEEN ? AND ?'''
+	c.execute(query3, values)
 	for urlsext in c.fetchall():
 		urls.append(urlsext[0])
 
 	conn.close();
 
 
-	return ids, urls
+	return pals, ids, urls
 
 
 def rgb2xyz(rgb):
@@ -112,17 +127,14 @@ def isMatch(searchRGB, imageRGB):
 	lab2 = xyz2lab(xyz2)
 	delt = deltE(lab1, lab2)
 
-	if (delt <= 10):
+	if (delt <= 11):
 		isMatch = True
-	return isMatch
+	return isMatch, delt
 
 # finds the count / frequency of objects given a specific search query (date, country, color)
 def findFreq(searchRGB, values):
 	count = 0
-	objectIDs = []
-	imageURLs = []
 
-	#conn = sqlite3.connect('mini-puam.db')
 	conn = sqlite3.connect('puam.db')
 	c = conn.cursor()
 
@@ -136,7 +148,6 @@ def findFreq(searchRGB, values):
 
 	c.execute(query, values)
 	palettes= c.fetchall();
-	ids, urls = getIDS_URLS(values);
 
 	i = 0;
 	for palette in palettes:
@@ -148,23 +159,78 @@ def findFreq(searchRGB, values):
 		rgb5 = (palette[12], palette[13], palette[14])
 
 
-		if (isMatch(searchRGB, rgb1) or isMatch(searchRGB, rgb2) or isMatch(searchRGB, rgb3) or isMatch(searchRGB, rgb4) or isMatch(searchRGB, rgb5)):
+		if (isMatch(searchRGB, rgb1)[0] or isMatch(searchRGB, rgb2)[0] or isMatch(searchRGB, rgb3)[0] or isMatch(searchRGB, rgb4)[0] or isMatch(searchRGB, rgb5)[0]):
 			count = count + 1
-			objectIDs.append(ids[i])
-			imageURLs.append(urls[i])
 
 		i = i+1
 
 	conn.close();
 
-	return count, objectIDs, imageURLs
+	return count
 
-def colorSearch(request):
+
+def findImages(searchRGB, values):
+	count = 0
+	objectIDs = []
+	imageURLs = []
+	imagePals = []
+	allDeltaEs = []
+
+	objectIDs_temp = []
+	imageURLs_temp = []
+	imagePals_temp = []
+	allDeltaEs_temp = []
+
+	palettes, ids, urls = getPALS_IDS_URLS(values);
+
+	i = 0;
+	for palette in palettes:
+		d = [0,0,0,0,0]
+		rgb1 = (palette[0], palette[1], palette[2])
+		rgb2 = (palette[3], palette[4], palette[5])
+		rgb3 = (palette[6], palette[7], palette[8])
+		rgb4 = (palette[9], palette[10], palette[11])
+		rgb5 = (palette[12], palette[13], palette[14])
+
+
+		tempRGB = [rgb1, rgb2, rgb3, rgb4, rgb5]
+
+		m1, d[0] = isMatch(searchRGB, rgb1)
+		m2, d[1] = isMatch(searchRGB, rgb2)
+		m3, d[2] = isMatch(searchRGB, rgb3)
+		m4, d[3] = isMatch(searchRGB, rgb4)
+		m5, d[4] = isMatch(searchRGB, rgb5)
+
+		if (m1 or m2 or m3 or m4 or m5): 
+			count = count + 1
+			indices = np.argsort(d)
+			allDeltaEs.append(d[indices[0]])
+			rgbs = []
+
+			for j in range (5):
+				rgbs.append(tempRGB[indices[j]])
+
+			objectIDs_temp.append(ids[i])
+			imageURLs_temp.append(urls[i])
+			imagePals_temp.append(rgbs)
+
+
+		i = i+1
+
+	order = np.argsort(allDeltaEs)
+
+	for j in range(len(order)) :
+		objectIDs.append(objectIDs_temp[order[j]])
+		imageURLs.append(imageURLs_temp[order[j]])
+		imagePals.append(imagePals_temp[order[j]])
+
+	return count, objectIDs, imageURLs, imagePals
+
+## used in front end map (only requires count)
+def colorFreq(request):
 	if request.method == 'GET':
 		data = []
 		searchCounts = []
-		searchObjectIDs = []
-		searchImageURLs = []
 
 		getrgb = request.GET['searchRGB']
 		rgb_str = getrgb.split(',')
@@ -180,14 +246,46 @@ def colorSearch(request):
 		for i in range (len(mapids)):
 			country = mapids[i].replace("_", " ")
 			values = (country, dates[0], dates[1])
-			count, objectIDs, imageURLs = findFreq(searchRGB, values)
+			count = findFreq(searchRGB, values)
+			searchCounts.append(count)
+
+		data.append(searchCounts)
+	return JsonResponse(data, safe=False)
+
+
+## used in display page (requires: counts, images, palettes IDS, urls)
+def imageSearch(request):
+	if request.method == 'GET':
+		data = []
+		searchCounts = []
+		searchObjectIDs = []
+		searchImageURLs = []
+		searchImagePals = []
+
+		getrgb = request.GET['searchRGB']
+		rgb_str = getrgb.split(',')
+		searchRGB = (int(rgb_str[0]), int(rgb_str[1]), int(rgb_str[2]))
+
+		getmapids = request.GET['mapIDs']
+		mapids = getmapids.split(',')
+
+		getdates = request.GET['dateRange']
+		dates_str = getdates.split(',')
+		dates = [int(dates_str[0]), int(dates_str[1])]
+
+		for i in range (len(mapids)):
+			country = mapids[i].replace("_", " ")
+			values = (country, dates[0], dates[1])
+			count, objectIDs, imageURLs, imagePals = findImages(searchRGB, values)
 			searchCounts.append(count)
 			searchObjectIDs.append(objectIDs)
 			searchImageURLs.append(imageURLs)
+			searchImagePals.append(imagePals)
 
 		data.append(searchCounts)
 		data.append(searchObjectIDs)
 		data.append(searchImageURLs)
+		data.append(searchImagePals)
 	return JsonResponse(data, safe=False)
 
 
