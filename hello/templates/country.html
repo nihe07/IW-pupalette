@@ -11,7 +11,7 @@
         </div>
     </div>
 
-       <div class = "container">
+    <div class = "container">
         <div class="row" style="padding-bottom:20px;">
             <!-- Titles -->
             <div class = "column" style="flex:55%">
@@ -32,14 +32,23 @@
             </div>
 
         </div>
-</div>
+    </div>
     
     <div class = "loader" id="loader" style="display: none;"></div>
 
 </div>
 
-    <div class="container special-container">
-        <div id="imageContainer" class="image-grid inputlabel"></div>
+    <div class = "container special-container" style="padding-bottom:0px; padding-right: 10%">
+        <label class="switch">
+            <input type="checkbox" onclick="toggleColors()">
+            <span class="toggle" id = "toggle-bg"></span>
+        </label>
+        <div id = "toggle" style="color:#BDBDBD; font-size: 12px; font-weight: bold; float: right;"> View Colors &nbsp
+        </div>
+    </div>
+
+    <div class="container special-container" style="padding-top:0px">
+        <div id="imageContainer" class="image-grid inputlabel"> </div>
     </div>
 
         <script>
@@ -65,7 +74,7 @@
             
         document.getElementById("country").innerHTML = country;
         document.getElementById("date").innerHTML = date;
-        document.getElementById("color").style.backgroundColor =color;
+        document.getElementById("color").style.backgroundColor = color;
 
 
         function getDate(dateStr) {
@@ -90,12 +99,9 @@
 
                 // Function to color the map accordingly 
         function searchFunc(rangeStr, rgbStr, mapidsStr, callback){
-            // let rangeStr = "1800,1849" // get the range from url 
-            // let rgbStr = "184,106,50" // get the rgbstr from url 
-            // let mapidsStr = "United_States" // get mapid from url 
             $.ajax({
               type: "GET",
-              url: "/colorSearch/",  // figure out how to link to colorSearch.py!!
+              url: "/imageSearch/",  
               data: { 
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 searchRGB: rgbStr,
@@ -116,6 +122,7 @@
                 count = response[0];
                 objectIDs = response[1];
                 imgURLs = response[2];
+                imagePals = response[3];
 
                 if (count == 0) {
                     document.getElementById('imageContainer').innerHTML= "No Results"
@@ -125,10 +132,15 @@
 
                 var container = document.getElementById('imageContainer');
 
+                allCols = imagePals[0];
+
                 for (let i = 0; i < count; i++) {
+
+                    cols = allCols[i]
+                    console.log(cols)
                     var img = document.createElement('img');
                     img.src = imgURLs[0][i];
-                    img.style = "width:auto; height:180px; padding:10px; display: inline-block"
+                    img.className= "display-im"
 
                     var link = document.createElement('a');
                     var baseURL = "https://artmuseum.princeton.edu/collections/objects/"
@@ -138,10 +150,74 @@
                     link.setAttribute("target", "_blank");
                     link.appendChild(img)
 
-                    container.appendChild(link);
+
+                    var elem = document.createElement('div');
+                    elem.setAttribute("class", "im-and-pal");
+
+
+                    var pal = document.createElement('div');
+                    pal.setAttribute("class", "palette");
+
+                    var col1 = document.createElement('div');
+                    col1.setAttribute("class", "pal-color");
+                    var hex1 = 'rgb(' + cols[0][0]+ ',' + cols[0][1] + ',' + cols[0][2] + ')'
+                    col1.style.cssText = 'background-color:' + hex1 + ';'
+
+                    var col2 = document.createElement('div');
+                    col2.setAttribute("class", "pal-color"); 
+                    var hex2 = 'rgb(' + cols[1][0]+ ',' + cols[1][1] + ',' + cols[1][2] + ')'
+                    col2.style.cssText = 'background-color:' + hex2 + ';'
+
+                    var col3 = document.createElement('div');
+                    col3.setAttribute("class", "pal-color");
+                    var hex3 = 'rgb(' + cols[2][0]+ ',' + cols[2][1] + ',' + cols[2][2]+ ')'
+                    col3.style.cssText = 'background-color:' + hex3 + ';'
+
+
+                    var col4 = document.createElement('div');
+                    col4.setAttribute("class", "pal-color");
+                    var hex4 = 'rgb(' + cols[3][0]+ ',' + cols[3][1] + ',' + cols[3][2]+ ')'
+                    col4.style.cssText = 'background-color:' + hex4 + ';'
+
+
+                    var col5 = document.createElement('div');
+                    col5.setAttribute("class", "pal-color");
+                    var hex5 = 'rgb(' + cols[4][0]+ ',' + cols[4][1] + ',' + cols[4][2] +')'
+                    col5.style.cssText = 'background-color:' + hex5 + ';'
+
+                    pal.appendChild(col1);
+                    pal.appendChild(col2);
+                    pal.appendChild(col3);
+                    pal.appendChild(col4);
+                    pal.appendChild(col5);
+
+                    elem.append(pal);
+                    elem.append(link);
+
+                    container.appendChild(elem);
                 }
             });
             
+        }
+
+        function toggleColors() {
+
+            var allIms = document.getElementsByClassName("display-im")
+            var toggle = document.getElementById("toggle")
+           
+
+            for (i = 0; i < allIms.length; i++) {
+                x = allIms[i]
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                    toggle.innerHTML = "View Colors &nbsp";
+
+                } else {
+                    x.style.display = "none";
+                    toggle.innerHTML = "View Images &nbsp";
+
+                }
+            }
         }
 
         getImages()
