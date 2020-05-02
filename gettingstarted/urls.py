@@ -19,5 +19,6 @@ urlpatterns = [
     path("country/", hello.views.country, name="country"),
     path("info/", hello.views.info, name="info"),
     path("admin/", admin.site.urls),
-    path("colorSearch/", hello.views.colorSearch, name="colorSearch")
+    path("colorFreq/", hello.views.colorFreq, name="colorFreq"),
+    path("imageSearch/", hello.views.imageSearch, name="imageSearch")
 ]
