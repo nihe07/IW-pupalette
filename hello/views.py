@@ -15,7 +15,6 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     return render(request, "index.html")
 
-
 def country(request):
     return render(request, "country.html")
 
@@ -110,7 +109,7 @@ def deltE(lab1, lab2):
 	dH = np.sqrt(dE**2 - dL**2 - dC**2)
 	sL = 1 
 	sC = 1 + 0.045 * c1
-	sH = 1 + 0.014 * c1
+	sH = 1 + 0.015 * c1
 	a = (dL/sL)**2
 	b = (dC/sC)**2
 	c = (dH/sH)**2
