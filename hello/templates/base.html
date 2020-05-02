@@ -18,12 +18,37 @@
     body {
       background-color: black;
     }
+    .im-and-pal {
+      	display:inline-block;
+    	padding:10px;
+    }
+    .display-im {
+    	float:left;
+    	height: 180px;
+    	width:auto;
+    	padding:10px; 
+    	display: inline-block
+    }
+
+    .palette {
+    	float:left;
+    	width: 25px;
+    	height: 180px;
+    	padding:10px;
+    	padding-right:25px;
+    }
+
+    .pal-color {
+    	width: 25px;
+    	height: 25px;
+    	border-radius: 25%;
+    	margin-bottom: 8px;
+    }
 
     .profile-pic {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background-color: grey;
     }
 
     .subheader-info {
@@ -50,7 +75,6 @@
     }
 
     .image-grid {
-      padding-top: 10px;
       display: flex;
       flex-wrap:wrap;
     }
@@ -127,9 +151,9 @@
     }
 
     .slidecontainer {
-    	padding-top: 20px;
-    	padding-bottom: 20px;
-    	padding-right: 20px;
+	  padding-top: 20px;
+	  padding-bottom: 20px;
+	  padding-right: 20px;
       width: 100%; /* Width of the outside container */
     }
 
@@ -202,6 +226,60 @@
       cursor: pointer;
     }
 
+	.switch {
+	  position: relative;
+	  float:right;
+	  display: inline-block;
+	  width: 40px;
+	  height: 22px;
+	}
+
+	.switch input { 
+	  opacity: 0;
+	  width: 0;
+	  height: 0;
+	}
+
+	.toggle {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  border-radius: 22px;
+	  background-color: #ccc;
+	  -webkit-transition: .3s;
+	  transition: .3s;
+	}
+
+	.toggle:before {
+	  position: absolute;
+	  content: "";
+	  height: 15px;
+	  width: 15px;
+	  left: 5px;
+	  bottom: 4px;
+	  border-radius: 22px;
+	  background-color: white;
+	  -webkit-transition: .3s;
+	  transition: .3s;
+	}
+
+	input:checked + .toggle {
+	  background-color: #f59c2a;
+	}
+
+	input:focus + .slidertoggle {
+	  box-shadow: 0 0 1px #2196F3;
+	}
+
+	input:checked + .toggle:before {
+	  border-radius: 50%;
+	  -webkit-transform: translateX(15px);
+	  -ms-transform: translateX(15px);
+	  transform: translateX(15px);
+	}
 
 </style>
 
