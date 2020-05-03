@@ -3,11 +3,10 @@
 
 {% block content %}
 
-<div style="background-color: #262626">
-    <div class="container special-container">
-       <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
+<div style="background-color: #262626;">
+    <div class="container special-container" style="padding-top: 10px">
        <div style="width: 75%">
-           <p style="color:#BDBDBD; font-size: 12px; font-weight: 300">Click into an image to view more information about the artwork on the Princeon University Art Museum website.</p>
+           <p style="color:#969696; font-size: 12px; font-weight: 350">Click into an image to view more information about the artwork on the Princeon University Art Museum website. Toggle to view isolated palettes, and click a palette color to copy its hex value to your clipboard. </p>
         </div>
     </div>
 
@@ -27,14 +26,18 @@
             <div class = "column" style="flex:25%"> </div>
 
             <!-- color circle -->
-            <div class = "column" style="flex:20%">
+            <div class = "column" style="flex:11%">
                 <div id = "color" class = "no-click-circle"></div>
             </div>
+            <div class = "column" style="flex:9%"></div>
 
         </div>
     </div>
+
+    <div id="hideDiv" class="copied">Copied hex to clipboard!</div>
     
     <div class = "loader" id="loader" style="display: none;"></div>
+
 
 </div>
 
@@ -55,9 +58,6 @@
             function goBack() {
                 window.history.back();
             }
-
-            // https://stackoverflow.com/questions/29488371/how-to-add-a-list-of-images-to-the-document-from-an-array-of-urls
-            // imgs is an array of image urls. modify so imgs is filled with urls from database.
 
         var queryString = decodeURIComponent(window.location.search);
         queryString = queryString.substring(1);
@@ -117,6 +117,14 @@
             });
         } 
 
+        function rgb2hex(rgb) {
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+            }
+            return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+        }
+
         function getImages() {
             searchFunc(rangeStr, rgbStr, mapidsStr, function(response){
                 count = response[0];
@@ -135,9 +143,7 @@
                 allCols = imagePals[0];
 
                 for (let i = 0; i < count; i++) {
-
                     cols = allCols[i]
-                    console.log(cols)
                     var img = document.createElement('img');
                     img.src = imgURLs[0][i];
                     img.className= "display-im"
@@ -163,15 +169,28 @@
                     var hex1 = 'rgb(' + cols[0][0]+ ',' + cols[0][1] + ',' + cols[0][2] + ')'
                     col1.style.cssText = 'background-color:' + hex1 + ';'
 
+
+                    rgb1 = (col1.style.backgroundColor)
+                    color1 = rgb2hex(rgb1);
+                    col1.setAttribute("onclick", "palcopy('" + color1 + "')");
+
                     var col2 = document.createElement('div');
                     col2.setAttribute("class", "pal-color"); 
                     var hex2 = 'rgb(' + cols[1][0]+ ',' + cols[1][1] + ',' + cols[1][2] + ')'
                     col2.style.cssText = 'background-color:' + hex2 + ';'
 
+                    rgb2 = (col2.style.backgroundColor)
+                    color2 = rgb2hex(rgb2);
+                    col2.setAttribute("onclick", "palcopy('" + color2 + "')");
+
                     var col3 = document.createElement('div');
                     col3.setAttribute("class", "pal-color");
                     var hex3 = 'rgb(' + cols[2][0]+ ',' + cols[2][1] + ',' + cols[2][2]+ ')'
                     col3.style.cssText = 'background-color:' + hex3 + ';'
+
+                    rgb3 = (col3.style.backgroundColor)
+                    color3 = rgb2hex(rgb3);
+                    col3.setAttribute("onclick", "palcopy('" + color3 + "')");
 
 
                     var col4 = document.createElement('div');
@@ -179,11 +198,20 @@
                     var hex4 = 'rgb(' + cols[3][0]+ ',' + cols[3][1] + ',' + cols[3][2]+ ')'
                     col4.style.cssText = 'background-color:' + hex4 + ';'
 
+                    rgb4 = (col4.style.backgroundColor)
+                    color4 = rgb2hex(rgb4);
+                    col4.setAttribute("onclick", "palcopy('" + color4 + "')");
+
+
 
                     var col5 = document.createElement('div');
                     col5.setAttribute("class", "pal-color");
                     var hex5 = 'rgb(' + cols[4][0]+ ',' + cols[4][1] + ',' + cols[4][2] +')'
                     col5.style.cssText = 'background-color:' + hex5 + ';'
+
+                    rgb5 = (col5.style.backgroundColor)
+                    color5 = rgb2hex(rgb5);
+                    col5.setAttribute("onclick", "palcopy('" + color5 + "')");
 
                     pal.appendChild(col1);
                     pal.appendChild(col2);
@@ -199,6 +227,18 @@
 
             });
             
+        }
+
+        function palcopy(col) {
+            setTimeout(function() { 
+                $("#hideDiv").fadeIn('fast'); 
+                $("#hideDiv").fadeOut(1200); });
+            var dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = col;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
         }
 
         function toggleColors() {
