@@ -5,21 +5,35 @@
 <!-- 
  -->
 <div style="background-color: #262626" onclick="hidePicker()">
-	<div class="container special-container" style="height:175px">
-	   <p style="color:white; font-size: 40px; font-weight: bold">PU Palette</p>
+	<div class="container special-container" style="padding-top: 10px">
 		 <div style="width: 75%">
-		   <p style="color:#BDBDBD; font-size: 12px; font-weight: 300">Explore the use of color in the Princeton University Art Museum's collection, over time and around the world! Select or text input a date and color, and watch the map light up with results. Click into countries to view artworks.  </p>
+		   <p style="color:#969696; font-size: 12px; font-weight: 350">Explore the use of color in the Princeton University Art Museum's collection, over time and around the world! Select or text input a date and color (or choose preselected colors), and watch the map light up with results. Click into countries to view artworks.  </p>
 		</div>
 	</div>
 
 	<div class = "container" >
-		<div class="row" style="padding-bottom:20px">
+		<div class="row" style="padding-bottom:0px">
 			<!-- date slider -->
 			<div class = "column" style="flex:55%">
 				<p class = "inputlabel">Date</p>
 				<input class = "inputbox" id="sliderInput"></input>
 				<div class="slidecontainer">
 		 			<input type="range" min="0" max="12" value="9" class="slider" id="slider">
+		 			<div class="sliderticks">
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					  <p></p>
+					</div>
 				</div>
 			</div>
 
@@ -33,16 +47,23 @@
 				
 			</div>
 
-			<!-- space between -->
-			<!-- <div class = "column" style="flex:5%"> </div> -->
 
 			<!-- color circle -->
-			<div class = "column" style="flex:20%">
+			<div class = "column" style="flex:11%">
 				<div id = "circle" class = "circle" onclick="showPicker(event)"></div>
 				<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px;" onclick="keepPicker(event)">
 		        </div>
+			</div>
+			<div class = "column" style="flex: 9%;">
+				  <div class = "pre-bar">
+					<div class= "pre-text">Suggested</div>
+					<div id ="pre1" class = "pre-select" style="background-color: #262626"></div>
+					<div id ="pre2" class = "pre-select" style="background-color: #262626" ></div>
+					<div id ="pre3" class = "pre-select" style="background-color: #262626"></div>
+				</div>
 
 			</div>
+
 
 		</div>
 	</div> 
@@ -51,8 +72,9 @@
 </div>
 
 
-<div class = "container special-container" style="padding-bottom: 0;" onclick="hidePicker()">
- 	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" ></object>
+<div class = "container special-container" style="padding-bottom: 0; max-height: 625px" onclick="hidePicker()">
+	 	<object data = "{% static 'worldmap.svg'%}" id="alphasvg" max-hegiht="100px" type = "image/svg+xml" width = "100%" style="max-height: inherit;" ></object>
+	 </div>
 </div>
 
 	<script>
@@ -70,18 +92,21 @@
 		var sliderInput = document.getElementById("sliderInput");
 		var hexval = document.getElementById("hexval");
 		var circle = document.getElementById("circle");
+		var p1 = document.getElementById("pre1");
+		var p2 = document.getElementById("pre2");
+		var p3 = document.getElementById("pre3");
+
 
 
 		let colorVAR = null;
 		let color = null;
 		let most = null;
-		let few = '#545454'
+		let few = '#6e6e6e'
 		let none = '#333333'
 
 		slider.value = 9
 		sliderInput.value = "1800-1849";
 		hexval.value ="#b86a32"
-
 
 
 	// Function determining color based on frequency of artworks
@@ -107,7 +132,7 @@
 
 			if (val == 0){low = "-15000"; high ="-2001"}
 			else if (val == 1) {low ="-2000"; high = "-1001"}
-			else if (val == 2) {low = "-1000"; high ="0"}
+			else if (val == 2) {low = "-1000"; high ="-1"} // this is adjusted to deal with a number of mis-tagged items with date "0" in the database; we exlucde the date "0"
 			else if (val == 3) {low = "1"; high ="499"}
 			else if (val == 4) {low = "500"; high = "999"}
 			else if (val == 5) {low = "1000"; high = "1499"}
@@ -253,21 +278,53 @@
 		});
 
 
-// ONCHANGE EVENTS
+	    function preselect(id) {
+	    	preCol = id.style.backgroundColor;
+	    	circle.style.backgroundColor = preCol;
+	    	boxPicker.addColor(preCol);
+	    	boxPicker.removeColor(0);
+	    	hexval.value = boxPicker.color.hexString;
+	    }
 
+
+
+// ONCHANGE EVENTS
 		var a = document.getElementById("alphasvg");
 	    a.addEventListener("load",function(){
 	       // get the inner DOM of alpha.svg
             var svgDoc = a.contentDocument;
             
-
             circle.style.backgroundColor = hexval.value
             most = hexval.value
             boxPicker.addColor(most);
 			boxPicker.removeColor(0);
-            svgDoc.getElementById('Most').style.fill = most
-
+            svgDoc.getElementById('Most').style.fill = most;
+            changePre(slider.value);
             colorMap(svgDoc)
+
+
+            p1.onclick = function() {
+            	preselect(p1);
+        		most = circle.style.backgroundColor;	
+        		svgDoc.getElementById('Most').style.fill = most;
+				colorMap(svgDoc);
+
+            }
+
+            p2.onclick = function() {
+            	preselect(p2);
+        		most = circle.style.backgroundColor;	
+        		svgDoc.getElementById('Most').style.fill = most;
+				colorMap(svgDoc);
+
+            }
+
+            p3.onclick = function() {
+            	preselect(p3);
+        		most = circle.style.backgroundColor;	
+        		svgDoc.getElementById('Most').style.fill = most;
+				colorMap(svgDoc);
+            }
 
 			// Fills circle and adjust box/hue slider colors & position with hex input
 			hexval.onchange = function() {
@@ -290,17 +347,88 @@
 			 	colorMap(svgDoc)
 			});
 
+			// changing preselected values based on date
+			function changePre(val) {
+				if (val== 0) { // 15000 -2000 BC
+		    		p1.style.backgroundColor = "#8e786b";
+		    		p2.style.backgroundColor = "#422f22";
+		    		p3.style.backgroundColor = "#815738";
+		    	}
+				if (val== 1) { // 2000 - 1001 BC
+		    		p1.style.backgroundColor = "#4c3b2e";
+		    		p2.style.backgroundColor = "#a05757";
+		    		p3.style.backgroundColor = "#283351";
+		    	}
+		    	if (val== 2) { // 1000 BC - 0 AD
+		    		p1.style.backgroundColor = "#d0a15b";
+		    		p2.style.backgroundColor = "#9b2a2a";
+		    		p3.style.backgroundColor = "#296139";
+		    	}
+				if (val== 3) { // 1 - 499 AD
+		    		p1.style.backgroundColor = "#b3845f";
+		    		p2.style.backgroundColor = "#8e5057";
+		    		p3.style.backgroundColor = "#da561d";
+		    	}
+				if (val== 4) { // 500 - 999 AD
+		    		p1.style.backgroundColor = "#8b651d";
+		    		p2.style.backgroundColor = "#b5543e";
+		    		p3.style.backgroundColor = "#271e1e";
+		    	}
+				if (val== 5) { // 1000 - 1499
+		    		p1.style.backgroundColor = "#474033";
+		    		p2.style.backgroundColor = "#ae8945";
+		    		p3.style.backgroundColor = "#713e5d";
+		    	}
+		    	if (val== 6) { // 1500 - 1599
+		    		p1.style.backgroundColor = "#a0956c";
+		    		p2.style.backgroundColor = "#9e6c50";
+		    		p3.style.backgroundColor = "#a8a31e";
+		    	}
+				if (val== 7) { // 1600- 1699
+		    		p1.style.backgroundColor = "#574729";
+		    		p2.style.backgroundColor = "#3666c5";
+		    		p3.style.backgroundColor = "#2d421c";
+		    	}
+		    	if (val== 8) { // 1700 -1799
+		    		p1.style.backgroundColor = "#7e2e2e";
+		    		p2.style.backgroundColor = "#d0a25d";
+		    		p3.style.backgroundColor = "#0c1f61";
+		    	}
+				if (val== 9) { // 1800 - 1849
+		    		p1.style.backgroundColor = "#b86a32";
+		    		p2.style.backgroundColor = "#a69823";
+		    		p3.style.backgroundColor = "#23295c";
+		    	}
+				if (val== 10) { // 1850 - 1899
+		    		p1.style.backgroundColor = "#2c7647";
+		    		p2.style.backgroundColor = "#ae863e";
+		    		p3.style.backgroundColor = "#509bc5";
+		    	}
+				if (val== 11) { // 1900 - 1944
+		    		p1.style.backgroundColor = "#b09c56";
+		    		p2.style.backgroundColor = "#1c70ae";
+		    		p3.style.backgroundColor = "#895f3f";
+		    	}
+		    	if (val== 12) { // 1944 - Present
+		    		p1.style.backgroundColor = "#1867a0";
+		    		p2.style.backgroundColor = "#4f4f4f";
+		    		p3.style.backgroundColor = "#98372b";
+		    	}
+			}
+
+
 			// changing the slider input based on slider location
 		    slider.onchange = function () {
 		    	colorMap(svgDoc)
 			}
 			slider.oninput = function () {
 				val = this.value
+				changePre(val);
 		       	if (val == 0){date = "15000-2001 BC"}
 				else if (val == 1) {date = "2000-1001 BC"}
 				else if (val == 2) {date = "1000 BC - 0 AD"}
 				else if (val == 3) {date = "1-499 AD"}
-				else if (val == 4) {date = "500-999"}
+				else if (val == 4) {date = "500-999 AD"}
 				else if (val == 5) {date = "1000-1499"}
 				else if (val == 6) {date = "1500-1599"}
 				else if (val == 7) {date = "1600-1699"}
@@ -329,11 +457,28 @@
 				else if (val >= 1900 && val <1945) {date = "1900-1944"; slider.value = 11;}
 				else if (val >= 1945) {date = "1945-Present"; slider.value = 12;}
 				sliderInput.value = date;
+
+				changePre(slider.value);
 				colorMap(svgDoc)
 			}
 
 	    }, false);
 	   
+
+	   	var zoom = 1;
+		
+		$('.zoom').on('click', function(){
+			zoom += 0.1;
+			$('.target').css('zoom', zoom);
+		});
+		$('.zoom-init').on('click', function(){
+			zoom = 1;
+			$('.target').css('zoom', zoom);
+		});
+		$('.zoom-out').on('click', function(){
+			zoom -= 0.1;
+			$('.target').css('zoom', zoom);
+		});
 
 		
 	</script>
