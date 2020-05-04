@@ -19,6 +19,12 @@
       background-color: black;
     }
 
+    .overlay {
+      width: 100%;
+      height: auto;
+      position: fixed;
+    }
+
 
     .dateseg {
       background-color: #262626;
@@ -34,9 +40,9 @@
     }
 
     .testlabels{
-      margin-top: 15px;
-      margin-bottom: 15px;
-      float: left;
+      margin-top:2%;
+      margin-bottom: 2%;
+      float: top;
       display: inline-block;
       width: 80px;
       height: auto;
@@ -62,7 +68,7 @@
       border-style: solid;
       border-color:grey;
 
-      float: left;
+      float: top;
       border-radius: 10px;
       display: inline-block;
       width: 22px;
@@ -418,6 +424,7 @@
 
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
+ <div class = "overlay" onclick= "hidePicker()"></div>
 <div style="background-color: #292929; padding-top: 20px;">
    <div class = "container" style="padding-top: 30px; padding-left: 50px; padding-bottom: 10px;padding-right: 50px; color: white;">
       <a id="home" href="/"><span class="glyphicon glyphicon-home glyphactive" style="float: left; color:white; font-size: 18px; padding-right: 20px"></span></a>
