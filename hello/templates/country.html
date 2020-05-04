@@ -3,61 +3,60 @@
 
 {% block content %}
 
-<div style="background-color: #262626;">
-    <div class="container special-container" style="padding-top: 10px">
-       <div style="width: 75%">
-           <p style="color:#969696; font-size: 12px; font-weight: 350">Click into an image to view more information about the artwork on the Princeon University Art Museum website. Toggle to view isolated palettes, and click a palette color to copy its hex value to your clipboard. </p>
-        </div>
-    </div>
+<div style="background-color: #292929;">
 
-    <div class = "container">
-        <div class="row" style="padding-bottom:20px;">
+    <div class ="container">
+      <div class="row" style="padding-top:10px; padding-bottom:0px">
             <!-- Titles -->
-            <div class = "column" style="flex:55%">
-                <p id="country" class = "inputlabel">Country</p>
-                <p id="date" class = "inputlabel">Date</p>
-                 <!--Go Back button FIX FUNCTIONALITY -->
-                 <div style="padding-top:10px">
-                     <button class="inputbox" style="padding-top: 1px; color:#BDBDBD; font-style: italic; font-weight: bold;" onclick="goBack()"> < Back to Map</button>
-                 </div>
+            <div class = "column" style="flex:65%">
+                 <p style="color:#969696; font-size: 12px; font-weight: 350">Click into an image to view more information about the artwork on the Princeon University Art Museum website. Toggle to view isolated palettes, and click a palette color to copy its hex value to your clipboard. </p>
             </div>
+                   
 
             <!-- space between -->
-            <div class = "column" style="flex:25%"> </div>
+            <div class = "column" style="flex:25%"> 
+            </div>
 
             <!-- color circle -->
-            <div class = "column" style="flex:11%">
+            <div class = "column" style="flex:10%; position:relative; bottom:20px">
                 <div id = "color" class = "no-click-circle"></div>
             </div>
-            <div class = "column" style="flex:9%"></div>
+            <div class = "column" style="flex:5%"></div>
 
         </div>
     </div>
 
+    <div class = "container special-container" style="padding-bottom:20px; padding-top:3px">
+        <span id="country" class = "inputlabel">Country, </span>
+        <span id="date" class = "inputlabel">Date</span>
+        <div style="padding-top: 15px; ">
+            <a id="back"><button class="inputbox" style="padding-top: 1px; color:#dbdbdb; font-style: italic; font-weight: bold;" onclick="goBack()">
+                <span style="font-style:normal; font-size: 10px">◀ &nbsp</span>Back to Map
+            </button></a>
+
+             <label class="switch" style="float:right">
+                <input id="check" type="checkbox" onclick="toggleColors()">
+                <span class="toggle" id = "toggle-bg"></span>
+            </label>
+            <div id = "toggle" style="color:#BDBDBD; font-size: 12px; font-weight: bold; float: right;"> View Colors &nbsp
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
     <div id="hideDiv" class="copied">Copied hex to clipboard!</div>
-    
     <div class = "loader" id="loader" style="display: none;"></div>
 
 
 </div>
 
-    <div class = "container special-container" style="padding-bottom:0px; padding-right: 10%">
-        <label class="switch">
-            <input id="check" type="checkbox" onclick="toggleColors()">
-            <span class="toggle" id = "toggle-bg"></span>
-        </label>
-        <div id = "toggle" style="color:#BDBDBD; font-size: 12px; font-weight: bold; float: right;"> View Colors &nbsp
-        </div>
-    </div>
-
-    <div class="container special-container" style="padding-top:0px">
+    <div class="container special-container" style="padding-top:10px">
         <div id="imageContainer" class="image-grid inputlabel"> </div>
     </div>
 
         <script>
-            function goBack() {
-                window.history.back();
-            }
 
         var queryString = decodeURIComponent(window.location.search);
         queryString = queryString.substring(1);
@@ -67,14 +66,26 @@
         let mapidsStr = queries[2];
 
 
-        let country = mapidsStr.replace(/_/g, " ")
-        let date = getDate(rangeStr)
-        let color = "rgb("+ rgbStr+ ")"
+        let country = mapidsStr.replace(/_/g, " ");
+        let date = getDate(rangeStr);
+        let color = "rgb("+ rgbStr+ ")";
+
+        newLoc = "?&" + rangeStr + "&" + rgbStr;
+        document.getElementById("home").href = "/" + newLoc;
+        document.getElementById("pupalette").href = "/" + newLoc;
+        document.getElementById("info").href = "/info/" + newLoc;
 
             
-        document.getElementById("country").innerHTML = country;
+        document.getElementById("country").innerHTML = country +" // " ;
         document.getElementById("date").innerHTML = date;
         document.getElementById("color").style.backgroundColor = color;
+
+
+        function goBack() {
+            url = "/?&" + rangeStr + "&" + rgbStr;
+            back = document.getElementById("back");
+            back.href = url;
+        }
 
 
         function getDate(dateStr) {
