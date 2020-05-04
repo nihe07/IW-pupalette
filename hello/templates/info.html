@@ -3,9 +3,9 @@
 
 {% block content %}
 
- <div style="background-color: #262626">
-    <div class="container special-container">
-       <p id="country" class = "inputlabel">About</p>
+ <div style="background-color: #292929">
+    <div class="container special-container" style="padding-top:10px">
+       <p class = "inputlabel">About</p>
     </div>
 
 </div>
@@ -47,10 +47,38 @@
 		<div class="body-info">If you have any questions, concerns, or general feedback for the user experience of PU Palette, please write a response <a href="https://forms.gle/gR6YL1WmTi9Gg8uEA" target="_blank"> here</a>!</div>
 
 		<p style="padding-top: 40px; font-style: italic; font-size: 11px">Map Source: https://commons.wikimedia.org/wiki/File:World_map_-_low_resolution.svg</p>
-		<p style="font-style: italic; font-size: 11px">last updated: 5/2/20</p>
+		<p style="font-style: italic; font-size: 11px">last updated: 5/4/20</p>
 
 	</div>
 	
 </div>
+
+	<script>
+
+		var url = window.location.href;
+		var index = url.indexOf("?");
+		var rangeStr = "";
+		var rgbStr = "";
+
+
+		if (index !== -1) {
+			var queries = url.split("&");
+			rangeStr = queries[1];
+			rgbStr = queries[2];
+		}
+
+		else {
+			rangeStr = "1800,1849";
+			rgbStr = "184,106,50";
+		}
+
+        newLoc = "?&" + rangeStr + "&" + rgbStr;
+        document.getElementById("home").href = "/" + newLoc;
+        document.getElementById("pupalette").href = "/" + newLoc;
+        document.getElementById("info").href = "/info/" + newLoc;
+
+
+
+	</script>
 
 {% endblock %}
