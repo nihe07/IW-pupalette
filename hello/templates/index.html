@@ -7,8 +7,10 @@
 <div style="background-color: #292929">
 	 <div class="container">
 		 	<div class="row" style= "padding-top:10px; padding-bottom:5px">
-		 		<div class="column" style="flex:65%; color:#969696; font-size: 12px; font-weight: 350;">
-		 		Explore the use of color in the Princeton University Art Museum's collection, over time and around the world! Choose a color and a date, and watch the map light up with results. Click into countries to view artworks.</div>
+		 		<div class="column" style="flex:65%; color:#969696; font-size: 12.5px; font-weight: 400;">
+		 		<p>Explore the use of color in the Princeton University Art Museum's collection!</p>
+
+		 		 <p>Watch the map light up with the frequencies of artwork containing the chosen color in the selected time period. Click into countries to view artworks.</p></div>
 
 		 		<div class="column" style="flex:10%"></div>
 
@@ -22,7 +24,7 @@
 
 				<!-- color circle -->
 				<div class = "column" style="flex:11%;position: relative; bottom:10px ">
-					<div id = "circle" class = "circle" onclick="showPicker()"></div>
+					<div id = "circle" class = "circle" onclick="showPicker(event)"></div>
 					<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px;">
 			        </div>
 				</div>
@@ -45,11 +47,14 @@
 
 	<div class = "loader" id="loader" style="display: none;"></div>
 </div>
-
-
-
 	<div class = "container special-container" style="padding-left: 2vw; padding-right: 2vw; padding-bottom: 0px; max-height: 500px; display:flex">
+
 	 		<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" style="max-height: inherit; display:inline-block; float:left" ></object>
+
+	 		
+
+	 
+
 	 		<div class="testdate" style="left:0px">
 	 			<div class = "dateseg" id = "12"></div>
 	 			<div class = "dateseg" id = "11"></div>
@@ -66,6 +71,7 @@
 	 			<div class = "dateseg" id = "0" style="border-bottom: 0px;"></div>
 
 	 		</div>
+	 	
 	 		<div class="testlabels" style="left:0px">
 	 			<div class = "datelabel" id="lab12">1945-Present</div>
 	 			<div class = "datelabel" id="lab11">1900-1944</div>
@@ -82,8 +88,7 @@
 	 			<div class = "datelabel" id="lab0">15000-2001 BC</div>
 
 	 		</div>
- 		
- 	</div>
+	 	</div>
 
 </div>
 
@@ -347,14 +352,19 @@
 // COLOR PICKER //
 // iro.js//
 	// Toggles showing color picker on click of circle
-		function showPicker() {
+		function showPicker(event) {
 		  var x = document.getElementById("boxPicker");
 		  if (x.style.display === "none") {
 		    x.style.display = "block";
 		  }
-		  else {
-		  	x.style.display = "none";
-		  }
+		  else {x.style.display = "none"}
+		  event.stopPropogation();
+		}
+
+		function hidePicker() {
+		  var x = document.getElementById("boxPicker");
+		  x.style.display = "none";
+
 		}
 
 	// Box & hue slider from iro.js 
