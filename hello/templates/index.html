@@ -4,7 +4,7 @@
 {% block content %}
 <!-- 
  -->
-<div style="background-color: #292929">
+<div style="background-color: #292929" onclick= "hidePicker()">
 	 <div class="container">
 		 	<div class="row" style= "padding-top:10px; padding-bottom:5px">
 		 		<div class="column" style="flex:65%; color:#969696; font-size: 12.5px; font-weight: 400;">
@@ -25,7 +25,7 @@
 				<!-- color circle -->
 				<div class = "column" style="flex:11%;position: relative; bottom:10px ">
 					<div id = "circle" class = "circle" onclick="showPicker(event)"></div>
-					<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px;">
+					<div class="ColorPicker" id="boxPicker" style="display:none; position: absolute; padding-top: 10px;" onclick = "keepPicker(event)">
 			        </div>
 				</div>
 
@@ -47,47 +47,51 @@
 
 	<div class = "loader" id="loader" style="display: none;"></div>
 </div>
-	<div class = "container special-container" style="padding-left: 2vw; padding-right: 2vw; padding-bottom: 0px; max-height: 500px; display:flex">
+	<div class = "container special-container" style="padding-left: 2vw; padding-right: 2vw; padding-bottom: 0px; max-height: 500px; display:flex" onclick="hidePicker()">
 
-	 		<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" style="max-height: inherit; display:inline-block; float:left" ></object>
+	 		<object data = "{% static 'worldmap.svg'%}" id="alphasvg" type = "image/svg+xml" width = "100%" style="max-height: inherit; display:inline-block; float:left"></object>
 
-	 		
+		<div>
+	 		<div class="inputlabel" style="font-size: 16.5px; padding-bottom: 10px; float:top">Date:</div>
 
-	 
-
-	 		<div class="testdate" style="left:0px">
-	 			<div class = "dateseg" id = "12"></div>
-	 			<div class = "dateseg" id = "11"></div>
-	 			<div class = "dateseg" id = "10"></div>
-	 			<div class = "dateseg" id = "9"></div>
-	 			<div class = "dateseg" id = "8"></div>
-	 			<div class = "dateseg" id = "7"></div>
-	 			<div class = "dateseg" id = "6"></div>
-	 			<div class = "dateseg" id = "5"></div>
-	 			<div class = "dateseg" id = "4"></div>
-	 			<div class = "dateseg" id = "3"></div>
-	 			<div class = "dateseg" id = "2"></div>
-	 			<div class = "dateseg" id = "1"></div>
-	 			<div class = "dateseg" id = "0" style="border-bottom: 0px;"></div>
-
+	 		<div style="height:90%; width: min(120px, 20vw);display:inline-block; float:left;">
+		 		<div class="testdate" onclick="hidePicker()">
+		 			<div class = "dateseg" id = "12"></div>
+		 			<div class = "dateseg" id = "11"></div>
+		 			<div class = "dateseg" id = "10"></div>
+		 			<div class = "dateseg" id = "9"></div>
+		 			<div class = "dateseg" id = "8"></div>
+		 			<div class = "dateseg" id = "7"></div>
+		 			<div class = "dateseg" id = "6"></div>
+		 			<div class = "dateseg" id = "5"></div>
+		 			<div class = "dateseg" id = "4"></div>
+		 			<div class = "dateseg" id = "3"></div>
+		 			<div class = "dateseg" id = "2"></div>
+		 			<div class = "dateseg" id = "1"></div>
+		 			<div class = "dateseg" id = "0" style="border-bottom: 0px;"></div>
+		 		</div>
+		 		<div class="testlabels"  onclick="hidePicker()">
+		 			<div class = "datelabel" id="lab12">1945-Present</div>
+		 			<div class = "datelabel" id="lab11">1900-1944</div>
+		 			<div class = "datelabel" id="lab10">1850-1899</div>
+		 			<div class = "datelabel" id="lab9">1800-1849</div>
+		 			<div class = "datelabel" id="lab8">1700-1799</div>
+		 			<div class = "datelabel" id="lab7">1600-1699</div>
+		 			<div class = "datelabel" id="lab6">1500-1599</div>
+		 			<div class = "datelabel" id="lab5">1000-1499</div>
+		 			<div class = "datelabel" id="lab4">500-999 AD</div>
+		 			<div class = "datelabel" id="lab3">1-499 AD</div>
+		 			<div class = "datelabel" id="lab2">1000 BC-0 AD</div>
+		 			<div class = "datelabel" id="lab1">2000-1001 BC</div>
+		 			<div class = "datelabel" id="lab0">15000-2001 BC</div>
+		 		</div>
 	 		</div>
-	 	
-	 		<div class="testlabels" style="left:0px">
-	 			<div class = "datelabel" id="lab12">1945-Present</div>
-	 			<div class = "datelabel" id="lab11">1900-1944</div>
-	 			<div class = "datelabel" id="lab10">1850-1899</div>
-	 			<div class = "datelabel" id="lab9">1800-1849</div>
-	 			<div class = "datelabel" id="lab8">1700-1799</div>
-	 			<div class = "datelabel" id="lab7">1600-1699</div>
-	 			<div class = "datelabel" id="lab6">1500-1599</div>
-	 			<div class = "datelabel" id="lab5">1000-1499</div>
-	 			<div class = "datelabel" id="lab4">500-999 AD</div>
-	 			<div class = "datelabel" id="lab3">1-499 AD</div>
-	 			<div class = "datelabel" id="lab2">1000 BC-0 AD</div>
-	 			<div class = "datelabel" id="lab1">2000-1001 BC</div>
-	 			<div class = "datelabel" id="lab0">15000-2001 BC</div>
+</div>
 
-	 		</div>
+
+
+
+
 	 	</div>
 
 </div>
@@ -156,13 +160,21 @@
 
 		if (index !== -1) {
 			var queries = url.split("&");
-			let rangeStr = queries[1];
-			let rgbStr = queries[2];
 
+			// dealing with faulty outclient IDS
+			if (queries.length != 3) {
+				dateVal = 9;
+				hexval.value = "#b86a32";
 
-			dateVal = getDateVal(rangeStr);
-			hexval.value = rgb2hex("rgb(" + rgbStr + ")");
-			circle.style.backgroundColor = "rgb(" + rgbStr + ")"; 
+			}
+			else {
+				let rangeStr = queries[1];
+				let rgbStr = queries[2];
+				dateVal = getDateVal(rangeStr);
+				hexval.value = rgb2hex("rgb(" + rgbStr + ")");
+				circle.style.backgroundColor = "rgb(" + rgbStr + ")"; 
+
+			}
 		}
 
 		else {
@@ -358,7 +370,14 @@
 		    x.style.display = "block";
 		  }
 		  else {x.style.display = "none"}
-		  event.stopPropogation();
+		  	event.stopPropagation();
+		}
+
+		function keepPicker(event) {
+			var x = document.getElementById("boxPicker");
+			x.style.display = "block";
+			event.stopPropagation();
+
 		}
 
 		function hidePicker() {
