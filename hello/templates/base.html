@@ -17,14 +17,8 @@
   <style>
     body {
       background-color: black;
-    }
 
-    .overlay {
-      width: 100%;
-      height: auto;
-      position: fixed;
     }
-
 
     .dateseg {
       background-color: #262626;
@@ -57,8 +51,11 @@
       height: 7.7%;
       float:left;
       font-size: min(10px, .9vw);
-
       overflow: hidden;
+    }
+
+    .datelabel:hover {
+      cursor: default;
     }
 
     .testdate {
@@ -424,8 +421,8 @@
 
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
- 
-<div style="background-color: #292929; padding-top: 20px;">
+<div style="background-color: #292929; padding-top: 20px;"
+      onclick= "hidePicker()">
    <div class = "container" style="padding-top: 30px; padding-left: 50px; padding-bottom: 10px;padding-right: 50px; color: white;">
       <a id="home" href="/"><span class="glyphicon glyphicon-home glyphactive" style="float: left; color:white; font-size: 18px; padding-right: 20px"></span></a>
       <a id="info" href="/info/"><span class="glyphicon glyphicon-info-sign" style="float: left;color:white; font-size: 18px"></span></a>
