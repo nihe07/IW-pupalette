@@ -1,3 +1,3 @@
-Nina He and Ezra Zinberg
+Nina He
 
 Spring 2020 Independent Work
